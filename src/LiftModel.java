@@ -10,7 +10,8 @@ public final class LiftModel {
 	
     private static LiftModel INSTANCE;
      
-    private LiftModel() {        
+    private LiftModel() {
+    	
     }
      
     public static LiftModel getInstance() {
