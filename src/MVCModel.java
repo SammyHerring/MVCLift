@@ -4,7 +4,10 @@ public class MVCModel {
 	
 	public static void main(String[] args) {
 		
-		System.out.print("---\tLift Simulator\t---");
+		System.out.println("---\tLift Simulator Program\t---");
+		System.out.println("---\tSimulator Initialising\t---\n");
+		LiftModel.initialise();
+		System.out.println("\n--\tSimulator Initialised\t---\n");
 		
 		LiftView v = new LiftView();
 		LiftModel m = LiftModel.getInstance();

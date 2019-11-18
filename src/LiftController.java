@@ -8,4 +8,6 @@ public class LiftController {
 		this.v = v;
 		this.m = m;
 	}
+	
 }
+ 

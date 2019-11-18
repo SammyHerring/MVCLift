@@ -2,6 +2,6 @@ package Subjects;
 
 public interface Subject {
 	public void register (Observer o);
-	public void unregister(Oberser o);
+	public void unregister(Observer o);
 	public void notifyObserver();
 }
