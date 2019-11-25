@@ -1,3 +1,4 @@
+import Subjects.*;
 
 public class LiftController {
 	
@@ -7,7 +8,19 @@ public class LiftController {
 	public LiftController(LiftView v, LiftModel m) {
 		this.v = v;
 		this.m = m;
-	}
-	
+		
+		Observer b0 = new Button();
+		Observer b1 = new Button();
+		
+		m.register(b0);
+		m.register(b1);
+		
+		b0.setSubject(m);
+		b1.setSubject(m);
+		
+		b0.update();
+		
+		m.postMessage("Update");
+	}	
 }
  
