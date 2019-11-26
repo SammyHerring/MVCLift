@@ -1,3 +1,6 @@
+import Subjects.Button;
+import Subjects.Observer;
+
 public class MVCModel {
 	
 	//MVC Model | System Entry point

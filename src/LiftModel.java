@@ -61,7 +61,7 @@ public final class LiftModel implements Subject {
     public int maxFloor() { return this.maxFloor; }
     
     public int minFloor() { return this.minFloor(); }
-    /// END		|	ACCESSOR & MUTATOR METHODS
+    /// END	|	ACCESSOR & MUTATOR METHODS
     
 	@Override
 	public void register(Observer obj) {
@@ -106,7 +106,7 @@ public final class LiftModel implements Subject {
 	
 	//method to post message to the topic
 	public void postMessage(String msg){
-		System.out.println("Message Posted to Topic:"+msg);
+		System.out.println("Message Posted to Observer: "+msg);
 		this.message=msg;
 		this.changed=true;
 		notifyObservers();
