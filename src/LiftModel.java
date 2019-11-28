@@ -58,9 +58,9 @@ public final class LiftModel implements Subject {
     
     public int maxWeight() { return this.maxWeight; }
     
-    public int maxFloor() { return this.maxFloor; }
+    public int minFloor() { return this.minFloor; }
     
-    public int minFloor() { return this.minFloor(); }
+    public int maxFloor() { return this.maxFloor; }
     /// END	|	ACCESSOR & MUTATOR METHODS
     
 	@Override

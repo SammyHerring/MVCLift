@@ -16,6 +16,8 @@ public class LiftController {
 		Button b0 = new Button();
 		Button b1 = new Button();
 		
+		Person p0 = new Person(0, 1);
+		
 		//Register observers to the subject
 		m.register(v);
 		b0.register(v);

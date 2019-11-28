@@ -2,6 +2,7 @@ package Subjects;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Person implements Subject {
 	//Attributes for program extension
@@ -14,8 +15,16 @@ public class Person implements Subject {
 	private String message;
 	private boolean changed;
 	
-	public Person(int weight, int startFloor, int endFloor) {
-		this.weight = weight;
+	public Person(int startFloor, int endFloor) {
+		
+    	//Random Person Weight Generator 
+    	//using Normal Distribution (Mean 1, Std. Deviation 1)
+    	double mean = 1.0, std = 0.25;
+    	Random rand = new Random();
+    	double weightFloat = mean + std * rand.nextGaussian();
+    	weightFloat *= 100;
+    	this.weight = (int)weightFloat;
+    	
 		this.startFloor = startFloor;
 		this.endFloor = endFloor;
 		

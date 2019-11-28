@@ -1,5 +1,4 @@
-import Subjects.Button;
-import Subjects.Observer;
+import java.util.Random;
 
 public class MVCModel {
 	
@@ -14,7 +13,6 @@ public class MVCModel {
 		
 		LiftView v = new LiftView();
 		LiftModel m = LiftModel.getInstance();
-		LiftController c = new LiftController(v, m);
-		
+		new LiftController(v, m);
 	}
 }
