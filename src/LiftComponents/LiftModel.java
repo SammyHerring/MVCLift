@@ -1,9 +1,11 @@
+package LiftComponents;
 import java.util.ArrayList;
 import java.util.List;
 
+import LiftStates.*;
 import Subjects.*;
 
-public final class LiftModel implements Subject {
+public final class LiftModel implements Subject, LiftState {
 	
 	private int currentFloor;
 	private boolean doorOpen;
@@ -18,15 +20,24 @@ public final class LiftModel implements Subject {
 	private final Object MUTEX= new Object();
 	private String message;
 	private boolean changed;
+	
+	private LiftState liftState;
      
     private LiftModel(int maxWeight, int minFloor, int maxFloor) {
-    	this.currentFloor = 0;
+    	LiftState liftInitState = new LiftInit();
+    	LiftState liftStartState = new LiftStart();
+    	LiftState liftMovingState = new LiftMoving();
+    	LiftState liftEndState = new LiftEnd();
+		
+    	this.currentFloor = minFloor;
     	this.doorOpen = false;
     	this.maxWeight = maxWeight; //To be used for program extension
     	this.minFloor = minFloor;
     	this.maxFloor = maxFloor;
-    	
     	this.observers = new ArrayList<>();
+    	
+    	this.setState(liftInitState);
+    	this.doAction(this);
     }
      
     public static LiftModel getInstance() {
@@ -104,12 +115,31 @@ public final class LiftModel implements Subject {
 		return this.message;
 	}
 	
+	public void changeFloor(int destinationFloor) {
+		if (this.currentFloor == destinationFloor) {
+			//do nothing else - change floor
+		}
+	}
+	
 	//method to post message to the topic
 	public void postMessage(String msg){
 		System.out.println("Message Posted to Observer: "+msg);
 		this.message=msg;
 		this.changed=true;
 		notifyObservers();
+	}
+
+	public void setState(LiftState state) {
+		this.liftState = state;
+	}
+
+	public LiftState getState() {
+		return this.liftState;
+	}
+
+	@Override
+	public void doAction(LiftModel l) {
+		this.liftState.doAction(l);
 	}
 
 }

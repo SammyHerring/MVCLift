@@ -1,3 +1,4 @@
+package LiftComponents;
 import Subjects.*;
 
 public class LiftController {
