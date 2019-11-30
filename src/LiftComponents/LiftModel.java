@@ -9,10 +9,10 @@ public final class LiftModel implements Subject, LiftState {
 	
 	private int currentFloor;
 	private boolean doorOpen;
-	//Attributes for program extension
 	private int maxWeight;
 	private int minFloor;
 	private int maxFloor;
+	private ArrayList passengers;
 	
     private static LiftModel INSTANCE;
    
@@ -28,17 +28,26 @@ public final class LiftModel implements Subject, LiftState {
     	LiftState liftStartState = new LiftStart();
     	LiftState liftMovingState = new LiftMoving();
     	LiftState liftEndState = new LiftEnd();
-		
-    	this.currentFloor = minFloor;
-    	this.doorOpen = false;
+    	
     	this.maxWeight = maxWeight; //To be used for program extension
     	this.minFloor = minFloor;
     	this.maxFloor = maxFloor;
-    	this.observers = new ArrayList<>();
     	
     	this.setState(liftInitState);
     	this.doAction(this);
+    	
+    	this.passengers = new ArrayList<>();
+    	
+    	this.observers = new ArrayList<>();
     }
+    
+	public void changeFloor(int destinationFloor) {
+		if (this.currentFloor == destinationFloor) {
+			//do nothing else - change floor
+		}
+	}
+    
+    /// START	| SINGLETON DESIGN PATTERN + THREAD MANAGEMENT
      
     public static LiftModel getInstance() {
     	if(INSTANCE == null) {
@@ -60,7 +69,10 @@ public final class LiftModel implements Subject, LiftState {
         return INSTANCE;
     }
     
+    ///	END		| SINGLETON DESIGN PATTERN + THREAD MANAGEMENT
+    
     /// START	|	ACCESSOR & MUTATOR METHODS
+    
     public int getCurrentFloor() { return this.currentFloor; }
     public void setCurrentFloor(int floor) { this.currentFloor = floor; }
     
@@ -72,7 +84,10 @@ public final class LiftModel implements Subject, LiftState {
     public int minFloor() { return this.minFloor; }
     
     public int maxFloor() { return this.maxFloor; }
-    /// END	|	ACCESSOR & MUTATOR METHODS
+    
+    /// END		|	ACCESSOR & MUTATOR METHODS
+    
+    ///	START	| SUBJECT DESIGN PATTERN
     
 	@Override
 	public void register(Observer obj) {
@@ -115,19 +130,16 @@ public final class LiftModel implements Subject, LiftState {
 		return this.message;
 	}
 	
-	public void changeFloor(int destinationFloor) {
-		if (this.currentFloor == destinationFloor) {
-			//do nothing else - change floor
-		}
-	}
-	
 	//method to post message to the topic
-	public void postMessage(String msg){
-		System.out.println("Message Posted to Observer: "+msg);
+	public void postUpdate(String msg){
 		this.message=msg;
 		this.changed=true;
 		notifyObservers();
 	}
+	
+	///	END		| SUBJECT DESIGN PATTERN
+	
+	///	START	|	LIFT STATE MANAGER DESIGN PATTERN
 
 	public void setState(LiftState state) {
 		this.liftState = state;
@@ -138,8 +150,10 @@ public final class LiftModel implements Subject, LiftState {
 	}
 
 	@Override
-	public void doAction(LiftModel l) {
-		this.liftState.doAction(l);
+	public void doAction(LiftModel m) {
+		this.liftState.doAction(m);
 	}
+	
+	///	END		| LIFT STATE MANAGER DESIGN PATTERN
 
 }

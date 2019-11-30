@@ -4,6 +4,6 @@ import LiftComponents.*;
 
 public interface LiftState {
 
-	public void doAction(LiftModel l);
+	public void doAction(LiftModel m);
 	
 }

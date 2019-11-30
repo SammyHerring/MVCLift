@@ -73,8 +73,7 @@ public class Person implements Subject {
 	}
 	
 	//method to post message to the topic
-	public void postMessage(String msg){
-		System.out.println("Message Posted to Observer: "+msg);
+	public void postUpdate(String msg){
 		this.message=msg;
 		this.changed=true;
 		notifyObservers();

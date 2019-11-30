@@ -17,24 +17,23 @@ public class LiftController {
 		Button b0 = new Button();
 		Button b1 = new Button();
 		
-		Person p0 = new Person(0, 1);
-		
 		//Register observers to the subject
 		m.register(v);
 		b0.register(v);
 		b1.register(v);
 		
-		//Attach observer to subjects and post message and update
-		v.setSubject(m);
-		m.postMessage("Model Message");
-		v.update();
 		
+		
+		b0.postUpdate("Lift Call");
+		
+		//Attach observer to subjects and update view
+//		v.setSubject(m); //Model set as subject in view by default
+//		m.postUpdate("Message");
+		
+		//Button call checker	
 		v.setSubject(b0);
-		b0.postMessage("Button 0 Message");
 		v.update();
-		
 		v.setSubject(b1);
-		b1.postMessage("Button 1 Message");
 		v.update();
 		
 	}

@@ -8,11 +8,11 @@ public class MVCModel {
 		
 		System.out.println("---\tLift Simulator Program\t---");
 		System.out.println("---\tSimulator Initialising\t---\n");
-		LiftModel.initialise(1000, 0, 1); //Init Parameters --> maxWeight, minFloor, maxFloor
+		LiftModel.initialise(1000, 0, 1); //Initialisation Parameters --> maxWeight, minFloor, maxFloor
 		System.out.println("\n--\tSimulator Initialised\t---\n");
 		
-		LiftView v = new LiftView();
 		LiftModel m = LiftModel.getInstance();
+		LiftView v = new LiftView(m);
 		new LiftController(v, m);
 	}
 }
