@@ -11,7 +11,7 @@ public class LiftStart implements LiftState {
 		//Start Phase
 		// If required, change to Floor of Button Press --> Moving Phase
 		// Open Doors
-		// Allow Passenger Entry (1 Second pp)
+		// Allow Passenger Entry (1 Second p/p)
 		
 		//Moving Phase
 		// Close Doors
@@ -20,7 +20,7 @@ public class LiftStart implements LiftState {
 		
 		//End Phase
 		// Open Doors
-		// Allow Passenger Exit (1 Seccond pp)
+		// Allow Passenger Exit (1 Second p/p)
 		// Close Doors
 		
 	}

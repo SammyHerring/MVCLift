@@ -74,7 +74,14 @@ public final class LiftModel implements Subject, LiftState {
     /// START	|	ACCESSOR & MUTATOR METHODS
     
     public int getCurrentFloor() { return this.currentFloor; }
-    public void setCurrentFloor(int floor) { this.currentFloor = floor; }
+    public void setCurrentFloor(int floor)
+    { 
+    	//Ensure requested floor is within lift instance's initialised floor range
+    	if ( floor < minFloor || floor > maxFloor ) {
+    		throw new IllegalArgumentException("Requested floor not within lift's initialised floor range.");
+    	} else 
+    		this.currentFloor = floor; 
+    }
     
     public boolean getDoorOpen() { return this.doorOpen; }
     public void setDoorOpen (boolean doorOpen) { this.doorOpen = doorOpen; }

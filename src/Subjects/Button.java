@@ -3,7 +3,12 @@ package Subjects;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Button implements Subject {
+import ButtonStates.*;
+
+public class Button implements Subject, ButtonState {
+	
+	private int buttonFloor;
+	private ButtonState buttonState;
 	
 	private List<Observer> observers;
 	private final Object MUTEX = new Object();
@@ -13,6 +18,8 @@ public class Button implements Subject {
 	public Button() {
 		this.observers = new ArrayList<>();
 	}
+	
+    ///	START	|	SUBJECT DESIGN PATTERN
 
 	@Override
 	public void register(Observer obj) {
@@ -61,6 +68,29 @@ public class Button implements Subject {
 		this.changed=true;
 		notifyObservers();
 	}
+	
+    ///	END		|	SUBJECT DESIGN PATTERN
+
+	///	START	|	LIFT STATE MANAGER DESIGN PATTERN
+
+	public void setState(ButtonState state) {
+		this.buttonState = state;
+	}
+
+	public ButtonState getState() {
+		return this.buttonState;
+	}
+
+	@Override
+	public void doAction(Button b) {
+		this.buttonState.doAction(b);
+		
+		//Does the button need access to the model???
+	}
+	
+	///	END		| LIFT STATE MANAGER DESIGN PATTERN
+	
+	
 	
 
 }

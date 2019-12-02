@@ -31,6 +31,8 @@ public class Person implements Subject {
 		this.observers = new ArrayList<>();
 	}
 	
+    ///	START	|	SUBJECT DESIGN PATTERN
+	
 	@Override
 	public void register(Observer obj) {
 		
@@ -78,4 +80,6 @@ public class Person implements Subject {
 		this.changed=true;
 		notifyObservers();
 	}
+	
+    ///	END		| 	SUBJECT DESIGN PATTERN
 }

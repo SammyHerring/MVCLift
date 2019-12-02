@@ -14,5 +14,6 @@ public class MVCModel {
 		LiftModel m = LiftModel.getInstance();
 		LiftView v = new LiftView(m);
 		new LiftController(v, m);
+		
 	}
 }

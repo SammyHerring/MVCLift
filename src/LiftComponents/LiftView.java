@@ -21,7 +21,7 @@ public class LiftView implements Observer {
 			//No Message with selected subject available
 //			System.out.println("LiftView"+":: No new message");
 		} else {
-			System.out.println("LiftView"+"\t|\tConsuming message:\t"+msg);
+			System.out.println("Lift View"+" |  Consuming Message:\t"+msg);
 		}
 		
 	}
