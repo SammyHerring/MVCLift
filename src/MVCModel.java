@@ -11,8 +11,8 @@ public class MVCModel {
 	
 	public static void main(String[] args) {
 		
-		TextView.print("---\tLift Simulator Program\t---\n");
-		TextView.print("---\tSimulator Initialising\t---");
+		TextView.print("---\tLift Simulator Program\t---");
+		TextView.print("---\tSimulator Initialising\t---\n", true);
 		
 		LiftModel.initialise(1000, 0, 1); //Initialisation Parameters --> maxWeight, minFloor, maxFloor
 		LiftModel m = LiftModel.getInstance();
@@ -27,10 +27,10 @@ public class MVCModel {
 			b.add(new Button(floor));
 		}
 		
-		TextView.print("--\tSimulator Initialised\t---\n");
+		TextView.print("--\tSimulator Initialised\t---", true);
 		
 		//Start simulation from Lift Controller
-		TextView.print("--\tSimulation Starting\t---");
+		TextView.print("--\tSimulation Starting\t---", true);
 		new LiftController(v, m, b);
 		
 	}
