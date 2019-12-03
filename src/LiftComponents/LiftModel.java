@@ -92,6 +92,14 @@ public final class LiftModel implements Subject, LiftState {
     
     public int maxFloor() { return this.maxFloor; }
     
+    public int floorCount() {
+    	if (this.minFloor == 0) {
+    		return this.maxFloor + 1;
+    	} else {
+    		return (this.maxFloor - this.minFloor);
+    	}
+    }
+    
     /// END		|	ACCESSOR & MUTATOR METHODS
     
     ///	START	| SUBJECT DESIGN PATTERN

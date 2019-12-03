@@ -15,7 +15,9 @@ public class Button implements Subject, ButtonState {
 	private String message;
 	private boolean changed;
 	
-	public Button() {
+	public Button(int buttonFloor) {
+		this.buttonFloor = buttonFloor;
+		
 		this.observers = new ArrayList<>();
 	}
 	
