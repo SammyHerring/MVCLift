@@ -17,10 +17,21 @@ public class Button implements Subject, State {
 	private State buttonState;
 	
 	public Button(int buttonFloor) {
+    	State buttonUnpressedState = new ButtonUnpressed(buttonFloor);
+    	State buttonPressedState = new ButtonPressed(buttonFloor);
+    	
 		this.buttonFloor = buttonFloor;
 		
 		this.observers = new ArrayList<>();
+		
+		this.postUpdate(buttonUnpressedState);
 	}
+	
+    /// START	|	ACCESSOR & MUTATOR METHODS
+    
+    public int getButtonFloor() { return this.buttonFloor; }
+    
+    /// END		|	ACCESSOR & MUTATOR METHODS
 	
     ///	START	|	SUBJECT DESIGN PATTERN
 
@@ -85,8 +96,8 @@ public class Button implements Subject, State {
 	}
 
 	@Override
-	public void doAction(LiftModel m) {
-		this.buttonState.doAction(m);
+	public void doAction(Object obj) {
+		this.buttonState.doAction(obj);
 		
 		//Does the button need access to the model???
 	}

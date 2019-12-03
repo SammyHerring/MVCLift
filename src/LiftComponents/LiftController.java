@@ -29,18 +29,12 @@ public class LiftController {
 		//Register all instances of buttons to view
 		for (Button button : b) {
 			button.register(v);
+			v.setSubject(button);
+			v.update();
 		}
 		
-		//Attach observer to subjects and update view
-//		v.setSubject(m); //Model set as subject in view by default
-//		m.postUpdate("Message");
-		
-		//Button call checker	
-//		v.setSubject(b.get(0));
-//		v.update();
-//		v.setSubject(b1);
-//		v.update();
-		
+		v.setSubject(m);
+
 		//generateScenario(scenario1());
 		
 	}

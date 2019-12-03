@@ -20,6 +20,7 @@ public class TextView {
 		}
 	}
 	
+	//Standardised Error report print method
 	public static void printError(String title, String text) {
 		System.out.println(getCurrentTimeStamp()+ "\t\t" + "[" + title.toUpperCase() + " ERROR]\t" + text);
 	}

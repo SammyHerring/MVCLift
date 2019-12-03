@@ -17,7 +17,6 @@ public class MVCModel {
 		
 		LiftModel.initialise(1000, 0, 1); //Initialisation Parameters --> maxWeight, minFloor, maxFloor
 		LiftModel m = LiftModel.getInstance();
-		LiftView v = new LiftView(m);
 		
 		//Generate list of Buttons for Model
 		List<Button> b = new ArrayList<>();
@@ -27,6 +26,8 @@ public class MVCModel {
 			TextView.print("Button Initialised. Floor: " + floor);
 			b.add(new Button(floor));
 		}
+		
+		LiftView v = new LiftView(m, b);
 		
 		TextView.print("--\tSimulator Initialised\t---", true);
 		

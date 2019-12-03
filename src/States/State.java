@@ -3,6 +3,6 @@ import LiftComponents.LiftModel;
 
 public interface State {
 	
-	public void doAction(LiftModel m);
+	public void doAction(Object obj);
 	
 }
