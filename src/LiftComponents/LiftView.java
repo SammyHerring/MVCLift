@@ -1,7 +1,7 @@
 package LiftComponents;
 import Subjects.*;
+import Views.TextView;
 import States.*;
-import GUIViews.TextView;
 
 public class LiftView implements Observer {
 	

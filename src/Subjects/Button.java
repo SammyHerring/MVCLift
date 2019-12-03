@@ -8,11 +8,12 @@ import States.*;
 public class Button implements Subject, State {
 	
 	private int buttonFloor;
-	private State buttonState;
 	
 	private List<Observer> observers;
 	private final Object MUTEX = new Object();
 	private boolean changed;
+	
+	private State buttonState;
 	
 	public Button(int buttonFloor) {
 		this.buttonFloor = buttonFloor;
@@ -59,11 +60,11 @@ public class Button implements Subject, State {
 	}
 
 	@Override
-	public Object getUpdate(Observer obj) {
+	public State getUpdate(Observer obj) {
 		return this.buttonState;
 	}
 	
-	//method to post message to the topic
+	@Override
 	public void postUpdate(State buttonState){
 		this.buttonState=buttonState;
 		this.changed=true;

@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import Views.TextView;
 import LiftComponents.*;
 import Subjects.Button;
 
@@ -10,8 +11,8 @@ public class MVCModel {
 	
 	public static void main(String[] args) {
 		
-		System.out.println("---\tLift Simulator Program\t---");
-		System.out.println("---\tSimulator Initialising\t---\n");
+		TextView.print("---\tLift Simulator Program\t---");
+		TextView.print("---\tSimulator Initialising\t---\n");
 		
 		LiftModel.initialise(1000, 0, 1); //Initialisation Parameters --> maxWeight, minFloor, maxFloor
 		LiftModel m = LiftModel.getInstance();
@@ -21,11 +22,11 @@ public class MVCModel {
 		List<Button> b = new ArrayList<>();
 		//Generate buttons for the number of existing floors
 		for (int floor = 0; floor < m.floorCount(); floor=floor+1) {
-			System.out.println("Button Initialised. Floor: " + floor);
+			TextView.print("Button Initialised. Floor: " + floor);
 			b.add(new Button(floor));
 		}
 		
-		System.out.println("\n--\tSimulator Initialised\t---\n");
+		TextView.print("\n--\tSimulator Initialised\t---\n");
 		
 		//Start simulation from Lift Controller
 		new LiftController(v, m, b);

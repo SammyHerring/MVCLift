@@ -1,5 +1,7 @@
 package Subjects;
 
+import States.State;
+
 public interface Subject {	
 	//methods to register and unregister observers
 	public void register(Observer obj);
@@ -9,5 +11,8 @@ public interface Subject {
 	public void notifyObservers();
 		
 	//method to get updates from subject
-	public Object getUpdate(Observer obj);
+	public State getUpdate(Observer obj);
+	
+	//method to post state update to observer
+	public void postUpdate(State state);
 }

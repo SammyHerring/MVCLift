@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import States.State;
+
 public class Person implements Subject {
 	//Attributes for program extension
 	private int weight;
@@ -12,8 +14,9 @@ public class Person implements Subject {
 	
 	private List<Observer> observers;
 	private final Object MUTEX = new Object();
-	private String message;
 	private boolean changed;
+	
+	private State personState;
 	
 	public Person(int startFloor, int endFloor) {
 		
@@ -70,13 +73,13 @@ public class Person implements Subject {
 	}
 
 	@Override
-	public Object getUpdate(Observer obj) {
-		return this.message;
+	public State getUpdate(Observer obj) {
+		return this.personState;
 	}
 	
-	//method to post message to the topic
-	public void postUpdate(String msg){
-		this.message=msg;
+	@Override
+	public void postUpdate(State personState){
+		this.personState=personState;
 		this.changed=true;
 		notifyObservers();
 	}

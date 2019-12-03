@@ -5,7 +5,7 @@ import java.util.List;
 import States.*;
 import Subjects.*;
 
-public final class LiftModel implements Subject, LiftState {
+public final class LiftModel implements Subject, State {
 	
 	private int currentFloor;
 	private boolean doorOpen;
@@ -21,20 +21,20 @@ public final class LiftModel implements Subject, LiftState {
 	private String message;
 	private boolean changed;
 	
-	private LiftState liftState;
+	private State liftState;
      
     private LiftModel(int maxWeight, int minFloor, int maxFloor) {
-    	LiftState liftInitState = new LiftInit();
-    	LiftState liftStartState = new LiftStart();
-    	LiftState liftMovingState = new LiftMoving();
-    	LiftState liftEndState = new LiftEnd();
+    	State liftInitState = new LiftInit();
+    	State liftStartState = new LiftStart();
+    	State liftMovingState = new LiftMoving();
+    	State liftEndState = new LiftEnd();
     	
     	this.maxWeight = maxWeight; //To be used for program extension
     	this.minFloor = minFloor;
     	this.maxFloor = maxFloor;
     	
     	this.setState(liftInitState);
-    	this.doAction(this);
+    	this.doAction();
     	
     	this.passengers = new ArrayList<>();
     	
@@ -141,13 +141,13 @@ public final class LiftModel implements Subject, LiftState {
 	}
 
 	@Override
-	public Object getUpdate(Observer obj) {
-		return this.message;
+	public State getUpdate(Observer obj) {
+		return this.liftState;
 	}
 	
-	//method to post message to the topic
-	public void postUpdate(String msg){
-		this.message=msg;
+	@Override
+	public void postUpdate(State liftState){
+		this.liftState=liftState;
 		this.changed=true;
 		notifyObservers();
 	}
@@ -156,17 +156,17 @@ public final class LiftModel implements Subject, LiftState {
 	
 	///	START	|	LIFT STATE MANAGER DESIGN PATTERN
 
-	public void setState(LiftState state) {
+	public void setState(State state) {
 		this.liftState = state;
 	}
 
-	public LiftState getState() {
+	public State getState() {
 		return this.liftState;
 	}
 
 	@Override
-	public void doAction(LiftModel m) {
-		this.liftState.doAction(m);
+	public void doAction() {
+		this.liftState.doAction();
 	}
 	
 	///	END		| LIFT STATE MANAGER DESIGN PATTERN

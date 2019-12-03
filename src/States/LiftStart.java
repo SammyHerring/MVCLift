@@ -1,11 +1,9 @@
 package States;
 
-import LiftComponents.*;
-
-public class LiftStart implements LiftState {
+public class LiftStart implements State {
 	
 	@Override
-	public void doAction(LiftModel m) {
+	public void doAction() {
 		System.out.println("Lift Journey Start");
 		
 		//Start Phase

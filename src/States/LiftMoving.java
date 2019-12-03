@@ -2,10 +2,10 @@ package States;
 
 import LiftComponents.*;
 
-public class LiftMoving implements LiftState {
+public class LiftMoving implements State {
 	
 	@Override
-	public void doAction(LiftModel m) {
+	public void doAction() {
 		System.out.println("Lift Moving");
 	}
 	
