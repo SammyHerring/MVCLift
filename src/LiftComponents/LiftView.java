@@ -21,24 +21,26 @@ public class LiftView implements Observer {
 		
 		if (update instanceof State) {
 			
-			if (update instanceof ButtonPressed) {
-				
-			} else if (update instanceof ButtonUnpressed) {
-				
-			} else if (update instanceof LiftInit) {
-				
-			} else if (update instanceof LiftStart) {
-				
-			} else if (update instanceof LiftMoving) {
-				
-			} else if (update instanceof LiftEnd) {
-				
-			} else {
-				TextView.print("State Error. State not found");
-			}
+			((State) update).doAction(m);
+			
+//			if (update instanceof ButtonPressed) {
+//				
+//			} else if (update instanceof ButtonUnpressed) {
+//				
+//			} else if (update instanceof LiftInit) {
+//
+//			} else if (update instanceof LiftStart) {
+//				
+//			} else if (update instanceof LiftMoving) {
+//				
+//			} else if (update instanceof LiftEnd) {
+//				
+//			} else {
+//				TextView.print("State Error. State not found");
+//			}
 			
 		} else {
-			TextView.print("State Error. Update pushed not a State object.");
+			TextView.printError("Object State", "Update object pushed, not of State object type.");
 		}
 	}
 

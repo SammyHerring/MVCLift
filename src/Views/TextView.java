@@ -20,6 +20,10 @@ public class TextView {
 		}
 	}
 	
+	public static void printError(String title, String text) {
+		System.out.println(getCurrentTimeStamp()+ "\t\t" + "[" + title.toUpperCase() + " ERROR]\t" + text);
+	}
+	
 	//Return string with current time stamp in required format
 	private static String getCurrentTimeStamp() {
 	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");

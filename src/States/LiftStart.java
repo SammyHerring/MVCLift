@@ -1,11 +1,15 @@
 package States;
+import LiftComponents.LiftModel;
 import Views.TextView;
 
 public class LiftStart implements State {
 	
 	@Override
-	public void doAction() {
+	public void doAction(LiftModel m) {
 		TextView.print("Lift Journey Start");
+		
+//		m.setCurrentFloor(m.requestedFloor());
+//		m.setDoorOpen(true);
 		
 		//Start Phase
 		// If required, change to Floor of Button Press --> Moving Phase

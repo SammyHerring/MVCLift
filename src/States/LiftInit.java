@@ -1,16 +1,15 @@
 package States;
 
+import LiftComponents.LiftModel;
 import Views.TextView;
 
 public class LiftInit implements State {
 	
 	@Override
-	public void doAction() {
-		TextView.print("Lift Initial State");
-		TextView.print("Doors Closed. Init floor.");
-		TextView.print("REVIEW BEFORE PRODUTION! NO ACTUAL INIT OCCURED.");
+	public void doAction(LiftModel m) {
+		TextView.print("Lift Initial State. | Doors Closed. Init floor.");
 		
-//		m.setCurrentFloor(m.minFloor());
-//		m.setDoorOpen(false);
+		m.setCurrentFloor(m.minFloor());
+		m.setDoorOpen(false);
 	}
 }

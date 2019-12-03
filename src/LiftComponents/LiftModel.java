@@ -34,12 +34,12 @@ public final class LiftModel implements Subject, State {
     	this.minFloor = minFloor;
     	this.maxFloor = maxFloor;
     	
-    	this.setState(liftInitState);
-    	this.doAction();
-    	
     	this.passengers = new ArrayList<>();
     	
     	this.observers = new ArrayList<>();
+    	
+    	this.postUpdate(liftInitState);
+    	TextView.print("Posting");
     }
     
 	public void changeFloor(int destinationFloor) {
@@ -166,8 +166,8 @@ public final class LiftModel implements Subject, State {
 	}
 
 	@Override
-	public void doAction() {
-		this.liftState.doAction();
+	public void doAction(LiftModel m) {
+		this.liftState.doAction(m);
 	}
 	
 	///	END		| LIFT STATE MANAGER DESIGN PATTERN

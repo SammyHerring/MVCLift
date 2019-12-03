@@ -22,8 +22,9 @@ public class LiftController {
 		this.b = b; //	Buttons		| Secondary Subject
 
 		//Register observers to the subject
-		//Register model to view
-		m.register(v);
+		//Register model to view and initialise model
+//		m.register(v);
+		v.update();
 		
 		//Register all instances of buttons to view
 		for (Button button : b) {
@@ -35,7 +36,7 @@ public class LiftController {
 //		m.postUpdate("Message");
 		
 		//Button call checker	
-		v.setSubject(b.get(0));
+//		v.setSubject(b.get(0));
 //		v.update();
 //		v.setSubject(b1);
 //		v.update();

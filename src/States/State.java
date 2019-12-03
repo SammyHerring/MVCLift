@@ -1,7 +1,8 @@
 package States;
+import LiftComponents.LiftModel;
 
 public interface State {
 	
-	public void doAction();
+	public void doAction(LiftModel m);
 	
 }

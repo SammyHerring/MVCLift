@@ -3,6 +3,7 @@ package Subjects;
 import java.util.ArrayList;
 import java.util.List;
 
+import LiftComponents.LiftModel;
 import States.*;
 
 public class Button implements Subject, State {
@@ -84,8 +85,8 @@ public class Button implements Subject, State {
 	}
 
 	@Override
-	public void doAction() {
-		this.buttonState.doAction();
+	public void doAction(LiftModel m) {
+		this.buttonState.doAction(m);
 		
 		//Does the button need access to the model???
 	}
