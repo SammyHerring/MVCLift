@@ -1,5 +1,4 @@
 package States;
-import LiftComponents.LiftModel;
 
 public interface State {
 	

@@ -22,7 +22,7 @@ public class ButtonPressed implements State, ButtonState {
 			
 		} else {
 			
-			Class cls = null;
+			Class<? extends Object> cls = null;
 			
 			for (Object aList : (List<?>) obj) {
 				
