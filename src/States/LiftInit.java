@@ -1,13 +1,14 @@
 package States;
 
-import LiftComponents.*;
+import Views.TextView;
 
 public class LiftInit implements State {
 	
 	@Override
 	public void doAction() {
-		System.out.println("Lift Initial State");
-		System.out.println("Doors Closed. Init floor.");
+		TextView.print("Lift Initial State");
+		TextView.print("Doors Closed. Init floor.");
+		TextView.print("REVIEW BEFORE PRODUTION! NO ACTUAL INIT OCCURED.");
 		
 //		m.setCurrentFloor(m.minFloor());
 //		m.setDoorOpen(false);

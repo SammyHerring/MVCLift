@@ -1,13 +1,13 @@
 package States;
 
-import LiftComponents.*;
+import Views.TextView;
 
 public class LiftEnd implements State {
 	
 	@Override
 	public void doAction() {
-		System.out.println("Lift Journey Ended");
-		System.out.println("Release passengers. Wait. Close doors. End Floor.");
+		TextView.print("Lift Journey Ended");
+		TextView.print("Release passengers. Wait. Close doors. End Floor.");
 	}
 	
 }

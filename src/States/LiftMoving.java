@@ -1,12 +1,12 @@
 package States;
 
-import LiftComponents.*;
+import Views.TextView;
 
 public class LiftMoving implements State {
 	
 	@Override
 	public void doAction() {
-		System.out.println("Lift Moving");
+		TextView.print("Lift Moving");
 	}
 	
 }

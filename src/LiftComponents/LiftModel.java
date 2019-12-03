@@ -4,6 +4,7 @@ import java.util.List;
 
 import States.*;
 import Subjects.*;
+import Views.TextView;
 
 public final class LiftModel implements Subject, State {
 	
@@ -64,7 +65,7 @@ public final class LiftModel implements Subject, State {
         }
         
         INSTANCE = new LiftModel(maxWeight, minFloor, maxFloor);
-        System.out.println("Lift Initialised.");
+        TextView.print("Lift Initialised.");
         
         return INSTANCE;
     }

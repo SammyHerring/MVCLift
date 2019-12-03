@@ -1,10 +1,11 @@
 package States;
+import Views.TextView;
 
 public class LiftStart implements State {
 	
 	@Override
 	public void doAction() {
-		System.out.println("Lift Journey Start");
+		TextView.print("Lift Journey Start");
 		
 		//Start Phase
 		// If required, change to Floor of Button Press --> Moving Phase
