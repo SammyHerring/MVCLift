@@ -1,5 +1,7 @@
 package LiftComponents;
 import Subjects.*;
+import States.*;
+import GUIViews.TextView;
 
 public class LiftView implements Observer {
 	
@@ -15,15 +17,21 @@ public class LiftView implements Observer {
 	@Override
 	public void update() {
 		
-		String msg = (String) subject.getUpdate(this);
+		Object update = subject.getUpdate(this);
 		
-		if(msg == null){
-			//No Message with selected subject available
-//			System.out.println("LiftView"+":: No new message");
+		if (update instanceof State) {
+			
+			if (update instanceof ButtonPressed) {
+				
+			} else if (update instanceof ButtonUnpressed) {
+				
+			} else {
+				TextView.print("Button State Error.");
+			}
+			
 		} else {
-			System.out.println("Lift View"+" |  Consuming Message:\t"+msg);
+			TextView.print("State Error.");
 		}
-		
 	}
 
 	@Override

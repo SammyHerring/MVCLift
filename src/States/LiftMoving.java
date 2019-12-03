@@ -1,4 +1,4 @@
-package LiftStates;
+package States;
 
 import LiftComponents.*;
 

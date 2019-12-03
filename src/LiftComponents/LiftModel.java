@@ -2,7 +2,7 @@ package LiftComponents;
 import java.util.ArrayList;
 import java.util.List;
 
-import LiftStates.*;
+import States.*;
 import Subjects.*;
 
 public final class LiftModel implements Subject, LiftState {

@@ -1,5 +1,7 @@
 package GUIViews;
 
 public class TextView {
-	// Acts as Text Logging System for Lift
+	public static void print(String text) {
+		System.out.println("text");
+	}
 }

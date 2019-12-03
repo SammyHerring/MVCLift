@@ -3,16 +3,15 @@ package Subjects;
 import java.util.ArrayList;
 import java.util.List;
 
-import ButtonStates.*;
+import States.*;
 
-public class Button implements Subject, ButtonState {
+public class Button implements Subject, State {
 	
 	private int buttonFloor;
-	private ButtonState buttonState;
+	private State buttonState;
 	
 	private List<Observer> observers;
 	private final Object MUTEX = new Object();
-	private String message;
 	private boolean changed;
 	
 	public Button(int buttonFloor) {
@@ -61,12 +60,12 @@ public class Button implements Subject, ButtonState {
 
 	@Override
 	public Object getUpdate(Observer obj) {
-		return this.message;
+		return this.buttonState;
 	}
 	
 	//method to post message to the topic
-	public void postUpdate(String msg){
-		this.message=msg;
+	public void postUpdate(State buttonState){
+		this.buttonState=buttonState;
 		this.changed=true;
 		notifyObservers();
 	}
@@ -75,17 +74,17 @@ public class Button implements Subject, ButtonState {
 
 	///	START	|	LIFT STATE MANAGER DESIGN PATTERN
 
-	public void setState(ButtonState state) {
+	public void setState(State state) {
 		this.buttonState = state;
 	}
 
-	public ButtonState getState() {
+	public State getState() {
 		return this.buttonState;
 	}
 
 	@Override
-	public void doAction(Button b) {
-		this.buttonState.doAction(b);
+	public void doAction() {
+		this.buttonState.doAction();
 		
 		//Does the button need access to the model???
 	}
