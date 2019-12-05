@@ -46,6 +46,18 @@ public final class LiftModel implements Subject, State {
 			//do nothing else - change floor
 		}
 	}
+	
+	///	START 	| PASSENGER MANAGEMENT
+	
+	public void addPassenger(Person p) {
+		passengers.add(p);
+	}
+	
+	public void removePassenger(Person p) {
+
+	}
+	
+	///	END		| PASSENGER MANAGEMENT
     
     /// START	| SINGLETON DESIGN PATTERN + THREAD MANAGEMENT
      

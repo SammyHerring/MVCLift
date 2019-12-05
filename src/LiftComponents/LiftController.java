@@ -33,6 +33,8 @@ public class LiftController {
 			v.update();
 		}
 		
+		//b.get(0).postUpdate(b.get(0).);
+		
 		v.setSubject(m);
 
 		//generateScenario(scenario1());

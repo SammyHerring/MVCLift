@@ -27,7 +27,7 @@ public class MVCModel {
 			b.add(new Button(floor));
 		}
 		
-		LiftView v = new LiftView(m, b);
+		LiftView v = new LiftView(m, b); //Give view access to model and button subjects
 		
 		TextView.print("--\tSimulator Initialised\t---", true);
 		

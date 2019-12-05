@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import States.State;
+import States.*;
 
 public class Person implements Subject {
 	//Attributes for program extension
@@ -20,19 +20,41 @@ public class Person implements Subject {
 	
 	public Person(int startFloor, int endFloor) {
 		
+		State personStartFloorState = new PersonStartFloor();
+		State personMovingFloorState = new PersonMovingFloor();
+		State personEndFloorState = new PersonEndFloor();
+
+    	this.weight = weightFloat();
+    	
+		this.startFloor = startFloor;
+		this.endFloor = endFloor;
+		
+		this.observers = new ArrayList<>();
+		
+		this.postUpdate(personStartFloorState);
+	}
+	
+	public int weightFloat() {
+		
     	//Random Person Weight Generator 
     	//using Normal Distribution (Mean 1, Std. Deviation 1)
     	double mean = 1.0, std = 0.25;
     	Random rand = new Random();
     	double weightFloat = mean + std * rand.nextGaussian();
     	weightFloat *= 100;
-    	this.weight = (int)weightFloat;
     	
-		this.startFloor = startFloor;
-		this.endFloor = endFloor;
-		
-		this.observers = new ArrayList<>();
+    	return (int)weightFloat;
 	}
+	
+    /// START	|	ACCESSOR & MUTATOR METHODS
+	
+    public int getWeight() { return this.weight; }
+    
+    public int getStartFloor() { return this.startFloor; }
+    
+    public int getEndFloor() { return this.endFloor; }
+	
+    /// END		|	ACCESSOR & MUTATOR METHODS
 	
     ///	START	|	SUBJECT DESIGN PATTERN
 	

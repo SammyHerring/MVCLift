@@ -32,10 +32,14 @@ public class ButtonUnpressed implements State, ButtonState {
 			
 			if ( cls == Button.class ) {
 				
+				//	START | Successful Button State Activation Process
+				
 				@SuppressWarnings("unchecked") //Check performed using reflection, evaluation occurs at runtime
 				List<Button> b = (List<Button>) obj;
 				
 				TextView.print("Button Not Pressed. Floor: " + b.get(buttonFloor).getButtonFloor());
+				
+				//	END | Successful Button State Activation Process
 				
 			} else if (cls == null ) {
 				

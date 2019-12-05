@@ -18,6 +18,8 @@ public class LiftView implements Observer {
 		
 		setSubject(m); //Set observer subject to Lift Model by default
 	}
+	
+    ///	START	| OBSERVER DESIGN PATTERN
 
 	@Override
 	public void update() {
@@ -45,7 +47,6 @@ public class LiftView implements Observer {
 		} else {
 			
 			TextView.printError("Object State", "Update object pushed, not of State object type.");
-			
 		}
 	}
 
@@ -54,20 +55,5 @@ public class LiftView implements Observer {
 		this.subject = subject;
 	}
 	
-//	if (update instanceof ButtonPressed) {
-//	
-//} else if (update instanceof ButtonUnpressed) {
-//	
-//} else if (update instanceof LiftInit) {
-//
-//} else if (update instanceof LiftStart) {
-//	
-//} else if (update instanceof LiftMoving) {
-//	
-//} else if (update instanceof LiftEnd) {
-//	
-//} else {
-//	TextView.print("State Error. State not found");
-//}
-
+    ///	END	| OBSERVER DESIGN PATTERN
 }
