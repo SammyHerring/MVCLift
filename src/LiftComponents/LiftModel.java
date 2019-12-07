@@ -23,12 +23,13 @@ public final class LiftModel implements Subject, State {
 	private boolean changed;
 	
 	private State liftState;
+	
+	public State liftInitState = new LiftInit();
+	public State liftStartState = new LiftStart();
+	public State liftMovingState = new LiftMoving();
+	public State liftEndState = new LiftEnd();
      
     private LiftModel(int maxWeight, int minFloor, int maxFloor) {
-    	State liftInitState = new LiftInit();
-    	State liftStartState = new LiftStart();
-    	State liftMovingState = new LiftMoving();
-    	State liftEndState = new LiftEnd();
     	
     	this.maxWeight = maxWeight; //To be used for program extension
     	this.minFloor = minFloor;
@@ -53,8 +54,8 @@ public final class LiftModel implements Subject, State {
 		passengers.add(p);
 	}
 	
-	public void removePassenger(Person p) {
-
+	public void removePassenger(int index) {
+		passengers.remove(index); //Remove by index
 	}
 	
 	///	END		| PASSENGER MANAGEMENT

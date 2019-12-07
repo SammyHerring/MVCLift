@@ -1,7 +1,10 @@
 package LiftComponents;
 
+import java.util.Arrays;
 import java.util.List;
 
+import CustomDataTypes.Scenario;
+import CustomDataTypes.ScenarioFloor;
 import Subjects.*;
 
 public class LiftController {
@@ -12,6 +15,17 @@ public class LiftController {
 	
 	
 	public LiftController(LiftView v, LiftModel m, List<Button> b) {
+		
+		//Scenario Setups
+		//Scenario 1
+		ScenarioFloor s1f0 = new ScenarioFloor(1, 0, 1, 0); //Scenario Floor --> Number of People, Source, Destination, Instance
+		List<ScenarioFloor> s1floors = Arrays.asList(new ScenarioFloor[]{s1f0});
+		Scenario s1 = new Scenario(s1floors, m.liftInitState);
+		
+		//Scenario 2
+		ScenarioFloor s2f1 = new ScenarioFloor(1, 1, 0, 0); //Scenario Floor --> Number of People, Source, Destination, Instance
+		List<ScenarioFloor> s2floors = Arrays.asList(new ScenarioFloor[]{s2f1});
+		Scenario s2 = new Scenario(s1floors, m.liftInitState);
 		
 		// Subjects --> Lift Model, Buttons, People
 		// Observers --> Lift View
@@ -33,23 +47,20 @@ public class LiftController {
 			v.update();
 		}
 		
-		//b.get(0).postUpdate(b.get(0).);
-		
 		v.setSubject(m);
 
-		//generateScenario(scenario1());
+		generateScenario(s1);
 		
 	}
 
 
-//	public void generateScenario(Quartet<Integer, Integer, Integer, Integer> floorData) {
-//		
-//		 System.out.println(floorData);
-//		 
-//	}
-//	
-//	public Quartet<Integer, Integer, Integer, Integer> scenario1() {
-//		return new Quartet<Integer, Integer, Integer, Integer>(0, 1, 0, 0);
-//	}
+	public void generateScenario(Scenario s1) {
+		
+		//Iterate through floors
+		for (int index = 0; index <= s1.getFloors().size(); index = index + 1) {
+			
+		}
+		 
+	}
 }
  
