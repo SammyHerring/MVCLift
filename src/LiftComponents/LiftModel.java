@@ -19,15 +19,14 @@ public final class LiftModel implements Subject, State {
    
 	private List<Observer> observers;
 	private final Object MUTEX= new Object();
-	private String message;
 	private boolean changed;
 	
 	private State liftState;
 	
-	public State liftInitState = new LiftInit();
-	public State liftStartState = new LiftStart();
-	public State liftMovingState = new LiftMoving();
-	public State liftEndState = new LiftEnd();
+	public final State liftInitState = new LiftInit();
+	public final State liftStartState = new LiftStart();
+	public final State liftMovingState = new LiftMoving();
+	public final State liftEndState = new LiftEnd();
      
     private LiftModel(int maxWeight, int minFloor, int maxFloor) {
     	

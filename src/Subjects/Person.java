@@ -18,12 +18,11 @@ public class Person implements Subject {
 	
 	private State personState;
 	
+	public final State personStartFloorState = new PersonStartFloor();
+	public final State personMovingFloorState = new PersonMovingFloor();
+	public final State personEndFloorState = new PersonEndFloor();
+	
 	public Person(int startFloor, int endFloor) {
-		
-		State personStartFloorState = new PersonStartFloor();
-		State personMovingFloorState = new PersonMovingFloor();
-		State personEndFloorState = new PersonEndFloor();
-
     	this.weight = weightFloat();
     	
 		this.startFloor = startFloor;

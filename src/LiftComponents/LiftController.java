@@ -5,7 +5,9 @@ import java.util.List;
 
 import CustomDataTypes.Scenario;
 import CustomDataTypes.ScenarioFloor;
+import CustomDataTypes.ScenarioFloorComparator;
 import Subjects.*;
+import Views.TextView;
 
 public class LiftController {
 	
@@ -25,7 +27,13 @@ public class LiftController {
 		//Scenario 2
 		ScenarioFloor s2f1 = new ScenarioFloor(1, 1, 0, 0); //Scenario Floor --> Number of People, Source, Destination, Instance
 		List<ScenarioFloor> s2floors = Arrays.asList(new ScenarioFloor[]{s2f1});
-		Scenario s2 = new Scenario(s1floors, m.liftInitState);
+		Scenario s2 = new Scenario(s2floors, m.liftInitState);
+		
+		//Scenario 3
+		ScenarioFloor s3f0 = new ScenarioFloor(3, 0, 1, 0); //Scenario Floor --> Number of People, Source, Destination, Instance
+		ScenarioFloor s3f1 = new ScenarioFloor(1, 1, 0, 0); //Scenario Floor --> Number of People, Source, Destination, Instance
+		List<ScenarioFloor> s3floors = Arrays.asList(new ScenarioFloor[]{s3f0, s3f1});
+		Scenario s3 = new Scenario(s3floors, m.liftInitState);
 		
 		// Subjects --> Lift Model, Buttons, People
 		// Observers --> Lift View
@@ -49,15 +57,20 @@ public class LiftController {
 		
 		v.setSubject(m);
 
-		generateScenario(s1);
+		generateScenario(s3);
 		
 	}
 
 
-	public void generateScenario(Scenario s1) {
+	public void generateScenario(Scenario s) {
+		
+		List<ScenarioFloor> floors = s.getFloors();
+		floors.sort(new ScenarioFloorComparator());
 		
 		//Iterate through floors
-		for (int index = 0; index <= s1.getFloors().size(); index = index + 1) {
+		for (int index = 0; index < floors.size(); index = index + 1) {
+			
+			TextView.print(floors.get(index).getInfo());
 			
 		}
 		 

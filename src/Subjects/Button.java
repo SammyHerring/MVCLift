@@ -16,10 +16,10 @@ public class Button implements Subject, State {
 	
 	private State buttonState;
 	
-	public Button(int buttonFloor) {
-    	State buttonUnpressedState = new ButtonUnpressed(buttonFloor);
-    	State buttonPressedState = new ButtonPressed(buttonFloor);
-    	
+	public final State buttonUnpressedState = new ButtonUnpressed(buttonFloor);
+	public final State buttonPressedState = new ButtonPressed(buttonFloor);
+	
+	public Button(int buttonFloor) {    	
 		this.buttonFloor = buttonFloor;
 		
 		this.observers = new ArrayList<>();
