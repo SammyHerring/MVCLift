@@ -53,6 +53,11 @@ public final class LiftModel implements Subject, State {
 		passengers.add(p);
 	}
 	
+	public Person addPassengerRef(Person p) {
+		passengers.add(p);
+		return p;
+	}
+	
 	public void removePassenger(int index) {
 		passengers.remove(index); //Remove by index
 	}
@@ -111,6 +116,8 @@ public final class LiftModel implements Subject, State {
     		return (this.maxFloor - this.minFloor);
     	}
     }
+    
+    public List<Person> passengers() { return this.passengers; }
     
     /// END		|	ACCESSOR & MUTATOR METHODS
     

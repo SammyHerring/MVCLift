@@ -20,18 +20,18 @@ public class LiftController {
 		
 		//Scenario Setups
 		//Scenario 1
-		ScenarioFloor s1f0 = new ScenarioFloor(1, 0, 1, 0); //Scenario Floor --> Number of People, Source, Destination, Instance
+		ScenarioFloor s1f0 = new ScenarioFloor(1, 0, 1, 0); //Scenario Floor 0 --> Number of People, Source, Destination, Instance
 		List<ScenarioFloor> s1floors = Arrays.asList(new ScenarioFloor[]{s1f0});
 		Scenario s1 = new Scenario(s1floors, m.liftInitState);
 		
 		//Scenario 2
-		ScenarioFloor s2f1 = new ScenarioFloor(1, 1, 0, 0); //Scenario Floor --> Number of People, Source, Destination, Instance
+		ScenarioFloor s2f1 = new ScenarioFloor(1, 1, 0, 0); //Scenario Floor 1 --> Number of People, Source, Destination, Instance
 		List<ScenarioFloor> s2floors = Arrays.asList(new ScenarioFloor[]{s2f1});
 		Scenario s2 = new Scenario(s2floors, m.liftInitState);
 		
 		//Scenario 3
-		ScenarioFloor s3f0 = new ScenarioFloor(3, 0, 1, 0); //Scenario Floor --> Number of People, Source, Destination, Instance
-		ScenarioFloor s3f1 = new ScenarioFloor(1, 1, 0, 0); //Scenario Floor --> Number of People, Source, Destination, Instance
+		ScenarioFloor s3f0 = new ScenarioFloor(3, 0, 1, 0); //Scenario Floor 0 --> Number of People, Source, Destination, Instance
+		ScenarioFloor s3f1 = new ScenarioFloor(1, 1, 0, 0); //Scenario Floor 1 --> Number of People, Source, Destination, Instance
 		List<ScenarioFloor> s3floors = Arrays.asList(new ScenarioFloor[]{s3f0, s3f1});
 		Scenario s3 = new Scenario(s3floors, m.liftInitState);
 		
@@ -57,7 +57,11 @@ public class LiftController {
 		
 		v.setSubject(m);
 
-		generateScenario(s3);
+		generateScenario(s1);
+		
+		for (Person passenger : m.passengers()) {
+			TextView.print("Passenger " + passenger.getID() + "\t|\tStart: " + passenger.getStartFloor() + "\t End: " + passenger.getEndFloor());
+		}
 		
 	}
 
@@ -71,6 +75,13 @@ public class LiftController {
 		for (int index = 0; index < floors.size(); index = index + 1) {
 			
 			TextView.print(floors.get(index).getInfo());
+			
+			//Iterate through number of passengers
+			for (int passengers = 0; passengers < floors.get(index).getPeople(); passengers = passengers + 1) {
+				
+				Person p = m.addPassengerRef(new Person(floors.get(index).getFloorStart(), floors.get(index).getFloorEnd()));
+				p.register(v);
+			}
 			
 		}
 		 

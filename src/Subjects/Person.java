@@ -3,11 +3,15 @@ package Subjects;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import States.*;
 
 public class Person implements Subject {
-	//Attributes for program extension
+
+	private final Integer ID;
+	private static AtomicInteger uniqueId=new AtomicInteger();
+	
 	private int weight;
 	private int startFloor;
 	private int endFloor;
@@ -23,6 +27,9 @@ public class Person implements Subject {
 	public final State personEndFloorState = new PersonEndFloor();
 	
 	public Person(int startFloor, int endFloor) {
+		
+		this.ID = uniqueId.getAndIncrement();
+		
     	this.weight = weightFloat();
     	
 		this.startFloor = startFloor;
@@ -46,6 +53,8 @@ public class Person implements Subject {
 	}
 	
     /// START	|	ACCESSOR & MUTATOR METHODS
+	
+	public Integer getID() { return this.ID; }
 	
     public int getWeight() { return this.weight; }
     
