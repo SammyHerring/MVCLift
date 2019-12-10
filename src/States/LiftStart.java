@@ -16,9 +16,37 @@ public class LiftStart implements State {
 			
 			LiftModel m = (LiftModel) obj;
 			
-			TextView.print("Lift Journey Start");
+			TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor());
+			
+			m.setCurrentFloor(m.minFloor());
+			m.setDoorOpen(false);
 			
 		}
+	}
+	
+	public static String convertToTitleCase(String text) {
+		
+	    if (text == null || text.isEmpty()) {
+	        return text;
+	    }
+	 
+	    StringBuilder converted = new StringBuilder();
+	 
+	    boolean convertNext = true;
+	    for (char ch : text.toCharArray()) {
+	        if (Character.isSpaceChar(ch)) {
+	            convertNext = true;
+	        } else if (convertNext) {
+	            ch = Character.toTitleCase(ch);
+	            convertNext = false;
+	        } else {
+	            ch = Character.toLowerCase(ch);
+	        }
+	        converted.append(ch);
+	    }
+	 
+	    return converted.toString();
+	}
 		
 //		m.setCurrentFloor(m.requestedFloor());
 //		m.setDoorOpen(true);
@@ -37,7 +65,5 @@ public class LiftStart implements State {
 		// Open Doors
 		// Allow Passenger Exit (1 Second p/p)
 		// Close Doors
-		
-	}
 	
 }

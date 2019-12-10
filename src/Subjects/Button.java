@@ -3,7 +3,6 @@ package Subjects;
 import java.util.ArrayList;
 import java.util.List;
 
-import LiftComponents.LiftModel;
 import States.*;
 
 public class Button implements Subject, State {
@@ -16,11 +15,11 @@ public class Button implements Subject, State {
 	
 	private State buttonState;
 	
-	public final State buttonUnpressedState = new ButtonUnpressed(buttonFloor);
-	public final State buttonPressedState = new ButtonPressed(buttonFloor);
-	
 	public Button(int buttonFloor) {    	
 		this.buttonFloor = buttonFloor;
+		
+		final State buttonUnpressedState = new ButtonUnpressed(this.buttonFloor);
+		final State buttonPressedState = new ButtonPressed(this.buttonFloor);
 		
 		this.observers = new ArrayList<>();
 		

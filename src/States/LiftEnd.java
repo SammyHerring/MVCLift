@@ -6,7 +6,7 @@ import Views.TextView;
 public class LiftEnd implements State {
 	
 	@Override
-	public void doAction(Object obj) {	
+	public void doAction(Object obj) {
 		
 		if ( !(obj instanceof LiftModel) ) {
 			
@@ -16,11 +16,36 @@ public class LiftEnd implements State {
 			
 			LiftModel m = (LiftModel) obj;
 			
-			TextView.print("Lift Journey Ended");
-			TextView.print("Release passengers. Wait. Close doors. End Floor.");
+			TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor());
+			
+			m.setCurrentFloor(m.minFloor());
+			m.setDoorOpen(false);
 			
 		}
+	}
+	
+	public static String convertToTitleCase(String text) {
 		
+	    if (text == null || text.isEmpty()) {
+	        return text;
+	    }
+	 
+	    StringBuilder converted = new StringBuilder();
+	 
+	    boolean convertNext = true;
+	    for (char ch : text.toCharArray()) {
+	        if (Character.isSpaceChar(ch)) {
+	            convertNext = true;
+	        } else if (convertNext) {
+	            ch = Character.toTitleCase(ch);
+	            convertNext = false;
+	        } else {
+	            ch = Character.toLowerCase(ch);
+	        }
+	        converted.append(ch);
+	    }
+	 
+	    return converted.toString();
 	}
 	
 }

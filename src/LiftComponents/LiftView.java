@@ -40,6 +40,18 @@ public class LiftView implements Observer {
 				
 			}
 			
+		} else if ( update instanceof PersonState ) {
+			
+			if (update instanceof State) {
+				
+				((State) update).doAction(m.passengers());
+				
+			} else {
+				
+				TextView.printError("Object State", "Update object pushed, is of type Button but not State.");
+				
+			}
+			
 		} else if (update instanceof State) {
 			
 			((State) update).doAction(m);

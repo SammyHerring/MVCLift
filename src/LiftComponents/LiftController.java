@@ -2,6 +2,7 @@ package LiftComponents;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.*;
 
 import CustomDataTypes.Scenario;
 import CustomDataTypes.ScenarioFloor;
@@ -14,7 +15,6 @@ public class LiftController {
 	private  LiftView v;
 	private LiftModel m;
 	private List<Button> b;
-	
 	
 	public LiftController(LiftView v, LiftModel m, List<Button> b) {
 		
@@ -35,6 +35,9 @@ public class LiftController {
 		List<ScenarioFloor> s3floors = Arrays.asList(new ScenarioFloor[]{s3f0, s3f1});
 		Scenario s3 = new Scenario(s3floors, m.liftInitState);
 		
+		//Scenario in use
+		Scenario s = s3;
+		
 		// Subjects --> Lift Model, Buttons, People
 		// Observers --> Lift View
 		
@@ -42,6 +45,8 @@ public class LiftController {
 		this.v = v; //	LiftView	| Main Observer
 		this.m = m; //	LiftModel	| Main Subject
 		this.b = b; //	Buttons		| Secondary Subject
+		
+		generateScenario(s);
 
 		//Register observers to the subject
 		//Register model to view and initialise model
@@ -56,11 +61,20 @@ public class LiftController {
 		}
 		
 		v.setSubject(m);
-
-		generateScenario(s1);
 		
 		for (Person passenger : m.passengers()) {
-			TextView.print("Passenger " + passenger.getID() + "\t|\tStart: " + passenger.getStartFloor() + "\t End: " + passenger.getEndFloor());
+			v.setSubject(passenger);
+			v.update();
+		}
+		
+		try {
+			
+			runScenario(m, b, s);
+			
+		} catch (Exception InterruptedException) {
+			
+			TextView.printError("Interupt Exception", "Processing interupt exception thrown by scenario runner");
+			
 		}
 		
 	}
@@ -85,6 +99,35 @@ public class LiftController {
 			
 		}
 		 
+	}
+	
+	public void runScenario(LiftModel m, List<Button> b, Scenario s) throws InterruptedException {
+		
+		TextView.print("--\tScenario " + (s.getID()+1) + " Starting\t--");
+		
+		ExecutorService executor = newWorkStealingPool();
+		
+		Future<?> status = executor.submit((Runnable) m.passengers().get(0).getState());
+		
+		for (Person passenger : m.passengers()) {
+			executor.execute((Runnable) passenger.getState());
+		}
+		
+		while(!status.isDone()) {
+			  TextView.print("Processing. Sleeping thread.");
+			  Thread.sleep(1000);
+		}
+		
+		TextView.print("--\tScenario " + (s.getID()+1) + " Finished\t--");
+		executor.shutdown();
+		TextView.print("--\tSimulation Finished\t--");
+		
+	}
+	
+	public static ExecutorService newWorkStealingPool() {
+		return new ForkJoinPool(Runtime.getRuntime().availableProcessors(),
+	                            ForkJoinPool.defaultForkJoinWorkerThreadFactory,
+	                            null, true);
 	}
 }
  

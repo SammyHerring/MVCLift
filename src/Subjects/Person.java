@@ -9,7 +9,7 @@ import States.*;
 
 public class Person implements Subject {
 
-	private final Integer ID;
+	private final Integer ID = uniqueId.getAndIncrement();
 	private static AtomicInteger uniqueId=new AtomicInteger();
 	
 	private int weight;
@@ -22,18 +22,16 @@ public class Person implements Subject {
 	
 	private State personState;
 	
-	public final State personStartFloorState = new PersonStartFloor();
-	public final State personMovingFloorState = new PersonMovingFloor();
-	public final State personEndFloorState = new PersonEndFloor();
-	
 	public Person(int startFloor, int endFloor) {
-		
-		this.ID = uniqueId.getAndIncrement();
 		
     	this.weight = weightFloat();
     	
 		this.startFloor = startFloor;
 		this.endFloor = endFloor;
+		
+		final State personStartFloorState = new PersonStartFloor(this.ID);
+		final State personMovingFloorState = new PersonMovingFloor(this.ID);
+		final State personEndFloorState = new PersonEndFloor(this.ID);
 		
 		this.observers = new ArrayList<>();
 		
@@ -61,6 +59,8 @@ public class Person implements Subject {
     public int getStartFloor() { return this.startFloor; }
     
     public int getEndFloor() { return this.endFloor; }
+    
+    public State getState() { return this.personState; }
 	
     /// END		|	ACCESSOR & MUTATOR METHODS
 	

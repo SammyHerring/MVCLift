@@ -22,17 +22,21 @@ public final class LiftModel implements Subject, State {
 	private boolean changed;
 	
 	private State liftState;
-	
-	public final State liftInitState = new LiftInit();
-	public final State liftStartState = new LiftStart();
-	public final State liftMovingState = new LiftMoving();
-	public final State liftEndState = new LiftEnd();
+	public State liftInitState;
+	public State liftStartState;
+	public State liftMovingState;
+	public State liftEndState;
      
     private LiftModel(int maxWeight, int minFloor, int maxFloor) {
     	
     	this.maxWeight = maxWeight; //To be used for program extension
     	this.minFloor = minFloor;
     	this.maxFloor = maxFloor;
+    	
+    	final State liftInitState = new LiftInit();
+    	final State liftStartState = new LiftStart();
+    	final State liftMovingState = new LiftMoving();
+    	final State liftEndState = new LiftEnd();
     	
     	this.passengers = new ArrayList<>();
     	
