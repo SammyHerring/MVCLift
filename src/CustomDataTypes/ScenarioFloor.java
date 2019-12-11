@@ -24,7 +24,7 @@ public class ScenarioFloor {
 	
 	public String getInfo() {
 
-		return "Scenario:\t"+this.people + this.floorStart + this.floorEnd + this.instance;
+		return "Scenario\tFloor: "+ this.floorStart + "\t|\t" + this.people + this.floorStart + this.floorEnd + this.instance;
 	}
 
 }

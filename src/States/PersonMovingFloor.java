@@ -1,20 +1,19 @@
 package States;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.Callable;
 
 import Subjects.Person;
 import Views.TextView;
 
-public class PersonMovingFloor implements State, PersonState, Runnable {
+public class PersonMovingFloor implements State, PersonState, Runnable, Callable {
 	
-	private final Integer personID;
+	private final Person p;
 	
 	private PersonAction personAction;
 	
-	public PersonMovingFloor(Integer personID) {
+	public PersonMovingFloor(Person p) {
 		
-		this.personID = personID;
+		this.p = p;
 		
 		this.personAction = PersonAction.WAITING;
 		
@@ -22,42 +21,9 @@ public class PersonMovingFloor implements State, PersonState, Runnable {
 
 	@Override
 	public void doAction(Object obj) {
-		if ( !(obj instanceof ArrayList) ) {
-			
-			throw new IllegalArgumentException("Object passed must be of type List<Person>.");
-			
-		} else {
-			
-			Class<? extends Object> cls = null;
-			
-			for (Object aList : (List<?>) obj) {
-				
-				//Check list type before casting
-			    cls = aList.getClass();
-			}
-			
-			if ( cls == Person.class ) {
-				
-				//	START | Successful Button State Activation Process
-				
-				@SuppressWarnings("unchecked") //Check performed using reflection, evaluation occurs at runtime
-				List<Person> p = (List<Person>) obj;
-				
-				TextView.print("Passenger " + (personID+1) + "\t"+ getPersonAction() + " \t|\tStart: " + p.get(personID).getStartFloor() + "\t End: " + p.get(personID).getEndFloor());
-				
-				//	END | Successful Button State Activation Process
-				
-			} else if (cls == null ) {
-				
-				throw new IllegalArgumentException("Object List<Person> must contain objects.");
-				
-			} else {
-				
-				throw new IllegalArgumentException("Object List<Person> must contain objects of type Person.");
-				
-			}
-			
-		}
+		
+		TextView.print("Passenger " + (p.getID()+1) + "\t"+ getPersonAction() + " \t|\tStart: " + p.getStartFloor() + "\t End: " + p.getEndFloor());
+		
 	}
 	
 	@Override
@@ -69,6 +35,12 @@ public class PersonMovingFloor implements State, PersonState, Runnable {
 	@Override
 	public void run() {
 		
+	}
+
+	@Override
+	public Object call() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

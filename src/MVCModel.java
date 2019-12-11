@@ -22,7 +22,7 @@ public class MVCModel {
 		
 		//Generate buttons for the number of existing floors
 		for (int floor = 0; floor < m.floorCount(); floor=floor+1) {
-			TextView.print("Button Initialised. Floor: " + floor);
+			TextView.print("Button Initialised \t\t|\t\tFloor: " + floor);
 			b.add(new Button(floor));
 		}
 		

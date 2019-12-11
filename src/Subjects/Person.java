@@ -21,6 +21,9 @@ public class Person implements Subject {
 	private boolean changed;
 	
 	private State personState;
+	public State personStartFloorState;
+	public State personMovingFloorState;
+	public State personEndFloorState;
 	
 	public Person(int startFloor, int endFloor) {
 		
@@ -29,9 +32,9 @@ public class Person implements Subject {
 		this.startFloor = startFloor;
 		this.endFloor = endFloor;
 		
-		final State personStartFloorState = new PersonStartFloor(this.ID);
-		final State personMovingFloorState = new PersonMovingFloor(this.ID);
-		final State personEndFloorState = new PersonEndFloor(this.ID);
+		final State personStartFloorState = new PersonStartFloor(this);
+		final State personMovingFloorState = new PersonMovingFloor(this);
+		final State personEndFloorState = new PersonEndFloor(this);
 		
 		this.observers = new ArrayList<>();
 		

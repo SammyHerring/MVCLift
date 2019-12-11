@@ -85,7 +85,7 @@ public final class LiftModel implements Subject, State {
         }
         
         INSTANCE = new LiftModel(maxWeight, minFloor, maxFloor);
-        TextView.print("Lift Initialised.");
+        TextView.print("Lift Initialised\t\t|\t\tFloors " + minFloor + " to " + maxFloor);
         
         return INSTANCE;
     }

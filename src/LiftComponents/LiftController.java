@@ -1,6 +1,8 @@
 package LiftComponents;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -71,9 +73,9 @@ public class LiftController {
 			
 			runScenario(m, b, s);
 			
-		} catch (Exception InterruptedException) {
+		} catch (Exception ex) {
 			
-			TextView.printError("Interupt Exception", "Processing interupt exception thrown by scenario runner");
+			TextView.printError("Scenario Exception", ex.getMessage());
 			
 		}
 		
@@ -101,25 +103,35 @@ public class LiftController {
 		 
 	}
 	
-	public void runScenario(LiftModel m, List<Button> b, Scenario s) throws InterruptedException {
+	public void runScenario(LiftModel m, List<Button> b, Scenario s) throws InterruptedException, ExecutionException, TimeoutException, Exception {
 		
 		TextView.print("--\tScenario " + (s.getID()+1) + " Starting\t--");
 		
-		ExecutorService executor = newWorkStealingPool();
+		ExecutorService executor = null;
 		
-		Future<?> status = executor.submit((Runnable) m.passengers().get(0).getState());
-		
-		for (Person passenger : m.passengers()) {
-			executor.execute((Runnable) passenger.getState());
+		try {
+			executor = newWorkStealingPool();
+			
+			Collection<Callable<Integer>> callables = new ArrayList<>();
+			
+			for (Person passenger : m.passengers()) {
+				callables.add((Callable<Integer>) passenger.getState());
+			}
+			
+			List<Future<Integer>>personTasks = executor.invokeAll(callables);
+			
+			for (Future<Integer> status : personTasks) {
+				Integer floor = status.get(1, TimeUnit.SECONDS);
+				TextView.print("Passenger Calling Lift to Floor " + floor);
+			}
+			
+		} finally {
+			
+			TextView.print("--\tScenario " + (s.getID()+1) + " Finished\t--");
+			executor.shutdown();
+			
 		}
-		
-		while(!status.isDone()) {
-			  TextView.print("Processing. Sleeping thread.");
-			  Thread.sleep(1000);
-		}
-		
-		TextView.print("--\tScenario " + (s.getID()+1) + " Finished\t--");
-		executor.shutdown();
+
 		TextView.print("--\tSimulation Finished\t--");
 		
 	}

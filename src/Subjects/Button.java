@@ -14,12 +14,14 @@ public class Button implements Subject, State {
 	private boolean changed;
 	
 	private State buttonState;
+	public State buttonUnpressedState;
+	public State buttonPressedState;
 	
 	public Button(int buttonFloor) {    	
 		this.buttonFloor = buttonFloor;
 		
-		final State buttonUnpressedState = new ButtonUnpressed(this.buttonFloor);
-		final State buttonPressedState = new ButtonPressed(this.buttonFloor);
+		final State buttonUnpressedState = new ButtonUnpressed(this);
+		final State buttonPressedState = new ButtonPressed(this);
 		
 		this.observers = new ArrayList<>();
 		
