@@ -22,10 +22,10 @@ public final class LiftModel implements Subject, State {
 	private boolean changed;
 	
 	private State liftState;
-	public State liftInitState;
-	public State liftStartState;
-	public State liftMovingState;
-	public State liftEndState;
+	public final State liftInitState;
+	public final State liftStartState;
+	public final State liftMovingState;
+	public final State liftEndState;
      
     private LiftModel(int maxWeight, int minFloor, int maxFloor) {
     	
@@ -33,10 +33,10 @@ public final class LiftModel implements Subject, State {
     	this.minFloor = minFloor;
     	this.maxFloor = maxFloor;
     	
-    	final State liftInitState = new LiftInit();
-    	final State liftStartState = new LiftStart();
-    	final State liftMovingState = new LiftMoving();
-    	final State liftEndState = new LiftEnd();
+    	this.liftInitState = new LiftInit();
+    	this.liftStartState = new LiftStart();
+    	this.liftMovingState = new LiftMoving();
+    	this.liftEndState = new LiftEnd();
     	
     	this.passengers = new ArrayList<>();
     	
@@ -188,8 +188,8 @@ public final class LiftModel implements Subject, State {
 	}
 
 	@Override
-	public void doAction(Object obj) {
-		this.liftState.doAction(obj);
+	public void doAction(boolean running, Object obj) {
+		this.liftState.doAction(running, obj);
 	}
 	
 	///	END		| LIFT STATE MANAGER DESIGN PATTERN

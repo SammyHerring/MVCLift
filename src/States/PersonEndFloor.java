@@ -20,7 +20,7 @@ public class PersonEndFloor implements State, PersonState, Runnable, Callable {
 	}
 
 	@Override
-	public void doAction(Object obj) {
+	public void doAction(boolean running, Object obj) {
 		
 		TextView.print("Passenger " + (p.getID()+1) + "\t"+ getPersonAction() + " \t|\tStart: " + p.getStartFloor() + "\t End: " + p.getEndFloor());
 	}

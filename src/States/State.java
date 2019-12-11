@@ -2,6 +2,6 @@ package States;
 
 public interface State {
 	
-	public void doAction(Object obj);
+	public void doAction(boolean running, Object obj);
 	
 }

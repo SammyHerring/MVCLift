@@ -110,6 +110,8 @@ public class LiftController {
 		ExecutorService executor = null;
 		
 		try {
+			v.begin();
+			
 			executor = newWorkStealingPool();
 			
 			Collection<Callable<Integer>> callables = new ArrayList<>();
@@ -127,6 +129,7 @@ public class LiftController {
 			
 		} finally {
 			
+			v.end();
 			TextView.print("--\tScenario " + (s.getID()+1) + " Finished\t--");
 			executor.shutdown();
 			

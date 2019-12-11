@@ -12,6 +12,10 @@ public class TextView {
 		System.out.println(getCurrentTimeStamp()+"\t\t"+text);
 	}
 	
+	public static void print(Boolean text) {
+		System.out.println(getCurrentTimeStamp()+"\t\t"+text.toString());
+	}
+	
 	public static void print(String text, boolean preNL) {
 		if (preNL) {
 			System.out.println("\n"+getCurrentTimeStamp()+"\t\t"+text);

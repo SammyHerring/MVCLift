@@ -14,14 +14,14 @@ public class Button implements Subject, State {
 	private boolean changed;
 	
 	private State buttonState;
-	public State buttonUnpressedState;
-	public State buttonPressedState;
+	public final State buttonUnpressedState;
+	public final State buttonPressedState;
 	
-	public Button(int buttonFloor) {    	
+	public Button(Integer buttonFloor) {    	
 		this.buttonFloor = buttonFloor;
 		
-		final State buttonUnpressedState = new ButtonUnpressed(this);
-		final State buttonPressedState = new ButtonPressed(this);
+		this.buttonUnpressedState = new ButtonUnpressed(this);
+		this.buttonPressedState = new ButtonPressed(this);
 		
 		this.observers = new ArrayList<>();
 		
@@ -30,7 +30,7 @@ public class Button implements Subject, State {
 	
     /// START	|	ACCESSOR & MUTATOR METHODS
     
-    public int getButtonFloor() { return this.buttonFloor; }
+    public Integer getButtonFloor() { return this.buttonFloor; }
     
     /// END		|	ACCESSOR & MUTATOR METHODS
 	
@@ -97,8 +97,8 @@ public class Button implements Subject, State {
 	}
 
 	@Override
-	public void doAction(Object obj) {
-		this.buttonState.doAction(obj);
+	public void doAction(boolean running, Object obj) {
+		this.buttonState.doAction(running, obj);
 		
 		//Does the button need access to the model???
 	}

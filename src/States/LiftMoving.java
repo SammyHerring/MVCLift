@@ -6,7 +6,7 @@ import Views.TextView;
 public class LiftMoving implements State {
 	
 	@Override
-	public void doAction(Object obj) {
+	public void doAction(boolean running, Object obj) {
 		
 		if ( !(obj instanceof LiftModel) ) {
 			

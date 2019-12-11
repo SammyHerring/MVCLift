@@ -12,29 +12,29 @@ public class Person implements Subject {
 	private final Integer ID = uniqueId.getAndIncrement();
 	private static AtomicInteger uniqueId=new AtomicInteger();
 	
-	private int weight;
-	private int startFloor;
-	private int endFloor;
+	private Integer weight;
+	private Integer startFloor;
+	private Integer endFloor;
 	
 	private List<Observer> observers;
 	private final Object MUTEX = new Object();
 	private boolean changed;
 	
 	private State personState;
-	public State personStartFloorState;
-	public State personMovingFloorState;
-	public State personEndFloorState;
+	public final State personStartFloorState;
+	public final State personMovingFloorState;
+	public final State personEndFloorState;
 	
-	public Person(int startFloor, int endFloor) {
+	public Person(Integer startFloor, Integer endFloor) {
 		
     	this.weight = weightFloat();
     	
 		this.startFloor = startFloor;
 		this.endFloor = endFloor;
 		
-		final State personStartFloorState = new PersonStartFloor(this);
-		final State personMovingFloorState = new PersonMovingFloor(this);
-		final State personEndFloorState = new PersonEndFloor(this);
+		this.personStartFloorState = new PersonStartFloor(this);
+		this.personMovingFloorState = new PersonMovingFloor(this);
+		this.personEndFloorState = new PersonEndFloor(this);
 		
 		this.observers = new ArrayList<>();
 		
@@ -57,11 +57,11 @@ public class Person implements Subject {
 	
 	public Integer getID() { return this.ID; }
 	
-    public int getWeight() { return this.weight; }
+    public Integer getWeight() { return this.weight; }
     
-    public int getStartFloor() { return this.startFloor; }
+    public Integer getStartFloor() { return this.startFloor; }
     
-    public int getEndFloor() { return this.endFloor; }
+    public Integer getEndFloor() { return this.endFloor; }
     
     public State getState() { return this.personState; }
 	

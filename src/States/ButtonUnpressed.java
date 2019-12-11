@@ -13,7 +13,7 @@ public class ButtonUnpressed implements State, ButtonState {
 		
 	}
 
-	public void doAction(Object obj) {
+	public void doAction(boolean running, Object obj) {
 		
 		TextView.print("Button\t\tFloor: " + b.getButtonFloor() + "\t|\tState: Not Pressed");
 		

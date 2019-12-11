@@ -12,12 +12,24 @@ public class LiftView implements Observer {
 	private LiftModel m;
 	private List<Button> b;
 	
+	private boolean running;
+	
 	public LiftView(LiftModel m, List<Button> b) {
 		this.m = m;
 		this.b = b;
 		
+		this.running = false;
+		
 		setSubject(m); //Set observer subject to Lift Model by default
 	}
+	
+    /// START	|	ACCESSOR & MUTATOR METHODS
+	
+	public void begin() { this.running = true; }
+	
+	public void end() { this.running = false; }
+	
+    /// END		|	ACCESSOR & MUTATOR METHODS
 	
     ///	START	| OBSERVER DESIGN PATTERN
 
@@ -32,7 +44,7 @@ public class LiftView implements Observer {
 			
 			if (update instanceof State) {
 				
-				((State) update).doAction(b);
+				((State) update).doAction(this.running, b);
 				
 			} else {
 				
@@ -44,7 +56,7 @@ public class LiftView implements Observer {
 			
 			if (update instanceof State) {
 				
-				((State) update).doAction(m.passengers());
+				((State) update).doAction(this.running, b); //Pass button references
 				
 			} else {
 				
@@ -54,7 +66,7 @@ public class LiftView implements Observer {
 			
 		} else if (update instanceof State) {
 			
-			((State) update).doAction(m);
+			((State) update).doAction(this.running, m);
 			
 		} else {
 			
