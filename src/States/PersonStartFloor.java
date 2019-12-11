@@ -23,8 +23,7 @@ public class PersonStartFloor implements State, PersonState, Callable<Integer> {
 
 	@Override
 	public void doAction(boolean running, Object obj) {
-		
-		
+			
 		if ( !(obj instanceof ArrayList) ) {	
 
 			throw new IllegalArgumentException("Object passed must be of type List<Button>.");	
@@ -47,7 +46,7 @@ public class PersonStartFloor implements State, PersonState, Callable<Integer> {
 				@SuppressWarnings("unchecked") //Check performed using reflection, evaluation occurs at runtime	
 				List<Button> b = (List<Button>) obj;	
 				
-				TextView.print("Passenger " + (p.getID()+1) + "\t"+ getPersonAction() + " \t|\tStart: " + p.getStartFloor() + "\t End: " + p.getEndFloor());
+				if (!running) { TextView.print("Passenger " + (p.getID()+1) + "\t"+ getPersonAction() + " \t|\tStart: " + p.getStartFloor() + "\t End: " + p.getEndFloor()); }
 				
 				if (running && b.get(p.getStartFloor()).getState() == b.get(p.getStartFloor()).buttonUnpressedState) {
 					
@@ -55,6 +54,8 @@ public class PersonStartFloor implements State, PersonState, Callable<Integer> {
 					
 					b.get(p.getStartFloor()).postUpdate(b.get(p.getStartFloor()).buttonPressedState);
 					
+				} else {
+					//b.get(p.getStartFloor()).postUpdate(b.get(p.getStartFloor()).buttonPressedState);
 				}
 
 				//	END | Successful Button State Activation Process	

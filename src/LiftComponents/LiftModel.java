@@ -33,10 +33,10 @@ public final class LiftModel implements Subject, State {
     	this.minFloor = minFloor;
     	this.maxFloor = maxFloor;
     	
-    	this.liftInitState = new LiftInit();
-    	this.liftStartState = new LiftStart();
-    	this.liftMovingState = new LiftMoving();
-    	this.liftEndState = new LiftEnd();
+    	this.liftInitState = new LiftInit(this);
+    	this.liftStartState = new LiftStart(this);
+    	this.liftMovingState = new LiftMoving(this);
+    	this.liftEndState = new LiftEnd(this);
     	
     	this.passengers = new ArrayList<>();
     	

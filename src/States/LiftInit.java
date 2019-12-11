@@ -1,26 +1,68 @@
 package States;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import LiftComponents.LiftModel;
+import Subjects.Button;
 import Views.TextView;
 
 public class LiftInit implements State {
 	
+	private LiftModel m;
+	
+	public LiftInit(LiftModel m) {
+		this.m = m;
+	}
+	
 	@Override
 	public void doAction(boolean running, Object obj) {
 		
-		if ( !(obj instanceof LiftModel) ) {
-			
-			throw new IllegalArgumentException("Object passed must be of type LiftModel.");
-			
-		} else {
-			
-			LiftModel m = (LiftModel) obj;
-			
-			TextView.print("Lift\t\tINIT\t\t|\tDoor Open: " + convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor());
-			
-			m.setCurrentFloor(m.minFloor());
-			m.setDoorOpen(false);
-			
+		if ( !(obj instanceof ArrayList) ) {	
+
+			throw new IllegalArgumentException("Object passed must be of type List<Button>.");	
+
+		} else {	
+
+			Class<? extends Object> cls = null;	
+
+
+			for (Object aList : (List<?>) obj) {	
+
+				//Check list type before casting	
+			    cls = aList.getClass();	
+			}	
+
+			if ( cls == Button.class ) {	
+
+				//	START | Successful Button State Activation Process	
+
+				@SuppressWarnings("unchecked") //Check performed using reflection, evaluation occurs at runtime	
+				List<Button> b = (List<Button>) obj;	
+				
+				if (!running) { TextView.print("Lift\t\tINIT\t\t|\tDoor Open: " + convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor()); }
+				
+				if (running) {
+					
+					m.setCurrentFloor(m.minFloor());
+					m.setDoorOpen(false);
+					
+				} else {
+					
+				}
+
+				//	END | Successful Button State Activation Process	
+
+			} else if (cls == null ) {	
+
+				throw new IllegalArgumentException("Object List<Button> must contain objects.");	
+
+			} else {	
+
+				throw new IllegalArgumentException("Object List<Button> must contain objects of type Button.");	
+
+			}	
+
 		}
 	}
 	

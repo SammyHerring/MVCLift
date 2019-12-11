@@ -99,8 +99,6 @@ public class Button implements Subject, State {
 	@Override
 	public void doAction(boolean running, Object obj) {
 		this.buttonState.doAction(running, obj);
-		
-		//Does the button need access to the model???
 	}
 	
 	///	END		| LIFT STATE MANAGER DESIGN PATTERN

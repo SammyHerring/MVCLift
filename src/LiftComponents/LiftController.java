@@ -47,13 +47,13 @@ public class LiftController {
 		this.v = v; //	LiftView	| Main Observer
 		this.m = m; //	LiftModel	| Main Subject
 		this.b = b; //	Buttons		| Secondary Subject
-		
-		generateScenario(s);
 
 		//Register observers to the subject
 		//Register model to view and initialise model
 //		m.register(v);
 		v.update();
+		
+		generateScenario(s);
 		
 		//Register all instances of buttons to view
 		for (Button button : b) {
@@ -62,13 +62,12 @@ public class LiftController {
 			v.update();
 		}
 		
-		v.setSubject(m);
-		
 		for (Person passenger : m.passengers()) {
 			v.setSubject(passenger);
 			v.update();
 		}
 		
+		//Run actual scenario simulation
 		try {
 			
 			runScenario(m, b, s);
@@ -114,18 +113,41 @@ public class LiftController {
 			
 			executor = newWorkStealingPool();
 			
-			Collection<Callable<Integer>> callables = new ArrayList<>();
+			List<Future<?>> subjectTasks = new ArrayList<>();
 			
-			for (Person passenger : m.passengers()) {
-				callables.add((Callable<Integer>) passenger.getState());
+			for (Person passenger : m.passengers() ) {
+				
+	            Future<?> passengerFuture = executor.submit(() -> {
+	                v.setSubject(passenger);
+	                v.update();
+	            });
+	            
+				for (Button button : b ) {
+					
+		            Future<?> buttonFuture = executor.submit(() -> {
+		                v.setSubject(button);
+		                v.update();
+		            });
+		            
+		            subjectTasks.add(buttonFuture);
+				}
+	            
+	            subjectTasks.add(passengerFuture);
 			}
 			
-			List<Future<Integer>>personTasks = executor.invokeAll(callables);
 			
-			for (Future<Integer> status : personTasks) {
-				Integer floor = status.get(1, TimeUnit.SECONDS);
-				TextView.print("Passenger Calling Lift to Floor " + floor);
-			}
+            Future<?> modelFuture = executor.submit(() -> {
+                v.setSubject(m);
+                v.update();
+            });
+            subjectTasks.add(modelFuture);
+            
+            
+            for (Future<?> future : subjectTasks) {
+                while (!future.isDone()) {
+                	Thread.sleep(100);
+                }
+            }
 			
 		} finally {
 			
