@@ -38,8 +38,6 @@ public class LiftStart implements State {
 
 			if ( cls == Button.class ) {	
 
-				//	START | Successful Button State Activation Process	
-
 				@SuppressWarnings("unchecked") //Check performed using reflection, evaluation occurs at runtime	
 				List<Button> b = (List<Button>) obj;	
 
@@ -78,8 +76,6 @@ public class LiftStart implements State {
 
 									for (Person person : peopleOnFloor) {
 
-//										TextView.print("Passenger " + (person.getID()+1) + "\tFloor: " + person.getStartFloor() + "\t|\tWaiting for Lift");
-
 										if (!m.passengerWeightNotExceeded(person.getWeight())) {
 											TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Full");
 											m.postUpdate(m.liftMovingState);
@@ -103,8 +99,6 @@ public class LiftStart implements State {
 						}
 					}
 				}
-
-				//	END | Successful Button State Activation Process	
 
 			} else if (cls == null ) {	
 

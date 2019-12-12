@@ -68,10 +68,6 @@ public class LiftMoving implements State {
 
 							}
 
-						} else {
-							//								TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Collecting Passengers");
-							//								m.setDoorOpen(false);
-							//								m.postUpdate(m.liftStartState);
 						}
 					}
 				}

@@ -1,5 +1,9 @@
 package CustomDataTypes;
 
+///Custom Quartet Data Type
+///This custom data type was considered during development instead of custom scenario floor type
+///Data type left in code package for general interest of reader/marker in development process
+
 public class Quartet<X, Y, Z, W> { 
 	public final X x;
 	public final Y y;
@@ -31,7 +35,6 @@ public class Quartet<X, Y, Z, W> {
         
         Quartet<X, Y, Z, W> comparator_ = (Quartet<X, Y, Z, W>) comparator;
 
-        // this may cause NPE if nulls are valid values for x or y. The logic may be improved to handle nulls properly, if needed.
         if (comparator_.x == null || comparator_.y == null || this.x == null || this.y == null ||
         	comparator_.z == null || comparator_.w == null || this.z == null || this.w == null) {
         	throw new NullPointerException("Comparator Quartet Values cannot be null.");
