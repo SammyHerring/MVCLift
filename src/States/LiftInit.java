@@ -16,7 +16,7 @@ public class LiftInit implements State {
 	}
 	
 	@Override
-	public void doAction(boolean running, Object obj) {
+	public synchronized void doAction(boolean running, Object obj) {
 		
 		if ( !(obj instanceof ArrayList) ) {	
 

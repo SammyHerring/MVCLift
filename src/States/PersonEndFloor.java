@@ -1,11 +1,9 @@
 package States;
 
-import java.util.concurrent.Callable;
-
 import Subjects.Person;
 import Views.TextView;
 
-public class PersonEndFloor implements State, PersonState, Runnable, Callable {
+public class PersonEndFloor implements State, PersonState, Runnable {
 	
 	private final Person p;
 	
@@ -35,12 +33,6 @@ public class PersonEndFloor implements State, PersonState, Runnable, Callable {
 	public void run() {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public Object call() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

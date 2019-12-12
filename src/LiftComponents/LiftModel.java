@@ -2,6 +2,7 @@ package LiftComponents;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import States.*;
 import Subjects.*;
@@ -14,8 +15,8 @@ public final class LiftModel implements Subject, State {
 	private int maxWeight;
 	private int minFloor;
 	private int maxFloor;
-	private List<Person> passengers;
-	private List<Person> persons;
+	private CopyOnWriteArrayList<Person> passengers;
+	private CopyOnWriteArrayList<Person> persons;
 	
     private static LiftModel INSTANCE;
    
@@ -40,8 +41,8 @@ public final class LiftModel implements Subject, State {
     	this.liftMovingState = new LiftMoving(this);
     	this.liftEndState = new LiftEnd(this);
     	
-    	this.passengers = Collections.synchronizedList(new ArrayList<Person>());
-    	this.persons = Collections.synchronizedList(new ArrayList<Person>());
+    	this.passengers = new CopyOnWriteArrayList<Person>(new ArrayList<Person>());
+    	this.persons = new CopyOnWriteArrayList<Person>(new ArrayList<Person>());
     	
     	this.observers = new ArrayList<>();
     	
@@ -49,49 +50,45 @@ public final class LiftModel implements Subject, State {
     }
 	
 	///	START 	| PASSENGER MANAGEMENT
-	
-	public void addPassenger(Person p) {
-		passengers.add(p); //Add by reference
-	}
-	
-	public void removePassenger(int passengerID) {
-			for (Person passenger : passengers) {
-				if (passenger.getID() == passengerID) {
-					passengers.remove(passenger); //Remove by Object Reference from ID
-				}
-			}
-	}
-	
 	public boolean checkPassenger(int passengerID) {
+		synchronized(passengers) {
 			for (Person passenger : passengers) {
 				if (passenger.getID() == passengerID) {
 					return true;
 				}
 			}
 			return false;
-	}
-	
-	public void addPerson(Person p) {
-		persons.add(p); //Add by reference
-	}
-	
-	public void removePerson(int personID) {
-			for (Person person : persons) {
-				if (person.getID() == personID) {
-					TextView.print("Person "+personID+" Removed");
-					persons.remove(personID); //Remove by Object Reference from ID
-				}
-			}
-//			TextView.printError("Person Removal", "Person "+personID+" Not Removed");
+		}
 	}
 	
 	public boolean checkPerson(int personID) {
+		synchronized(persons) {
 			for (Person person : persons) {
 				if (person.getID() == personID) {
 					return true;
 				}
 			}
 			return false;
+		}
+	}
+	
+	public Integer currentWeight() {
+		Integer w = 0;
+		synchronized (passengers) {
+			for (Person person : passengers) {
+				w = w + person.getWeight();
+			}
+			return w;
+		}
+	}
+	
+	public boolean passengerWeightNotExceeded(Integer passengerWeight) {
+		
+		if (!(Integer.sum(currentWeight(), passengerWeight) > this.maxWeight)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	///	END		| PASSENGER MANAGEMENT

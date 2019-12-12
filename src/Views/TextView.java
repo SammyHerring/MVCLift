@@ -12,6 +12,10 @@ public class TextView {
 		System.out.println(getCurrentTimeStamp()+"\t\t"+text);
 	}
 	
+	public static void print(Integer text) {
+		System.out.println(getCurrentTimeStamp()+"\t\t"+text.toString());
+	}
+	
 	public static void print(Boolean text) {
 		System.out.println(getCurrentTimeStamp()+"\t\t"+text.toString());
 	}
@@ -22,6 +26,16 @@ public class TextView {
 		} else {
 			System.out.println(getCurrentTimeStamp()+"\t\t"+text);
 		}
+	}
+	
+	//Print with no new line (nl)
+	public static void printnl(String text) {
+		System.out.print(getCurrentTimeStamp()+"\t\t"+text);
+	}
+	
+	//Print with no new line (nl) and no timestamp (nt)
+	public static void printnlnt(String text) {
+		System.out.print(text);
 	}
 	
 	//Standardised Error report print method

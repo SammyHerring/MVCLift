@@ -46,7 +46,7 @@ public class Person implements Subject {
 		this.postUpdate(personStartFloorState);
 	}
 	
-	public int weightFloat() {
+	private Integer weightFloat() {
 		
     	//Random Person Weight Generator 
     	//using Normal Distribution (Mean 1, Std. Deviation 1)

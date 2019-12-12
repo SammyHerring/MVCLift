@@ -38,7 +38,7 @@ public class LiftController {
 		Scenario s3 = new Scenario(s3floors, m.liftInitState);
 		
 		//Scenario in use
-		Scenario s = s3;
+		Scenario s = s1;
 		
 		// Subjects --> Lift Model, Buttons, People
 		// Observers --> Lift View
@@ -50,7 +50,6 @@ public class LiftController {
 
 		//Register observers to the subject
 		//Register model to view and initialise model
-//		m.register(v);
 		v.update();
 		
 		generateScenario(s);
@@ -69,6 +68,7 @@ public class LiftController {
 		
 		//Run actual scenario simulation
 		try {
+			
 			TextView.print("--\tScenario " + (s.getID()+1) + " Starting\t--");
 			
 			while(!m.getState().equals(m.liftEndState)) {
@@ -80,7 +80,9 @@ public class LiftController {
 			TextView.printError("Scenario Exception", ex.getMessage());
 			
 		} finally {
+			
 			TextView.print("--\tScenario " + (s.getID()+1) + " Finished\t--");
+			
 		}
 		
 		TextView.print("--\tSimulation Finished\t--");
@@ -100,7 +102,7 @@ public class LiftController {
 			
 			//Iterate through number of passengers
 			for (int personIndex = 0; personIndex < floors.get(index).getPeople(); personIndex = personIndex + 1) {
-				m.addPerson(new Person(floors.get(index).getFloorStart(), floors.get(index).getFloorEnd(), m));
+				m.persons().add(new Person(floors.get(index).getFloorStart(), floors.get(index).getFloorEnd(), m));
 				m.persons().get(personIndex).register(v);
 			}
 			

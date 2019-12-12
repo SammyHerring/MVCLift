@@ -4,22 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import CustomDataTypes.Generic;
 import LiftComponents.LiftModel;
 import Subjects.Button;
 import Subjects.Person;
 import Views.TextView;
 
 public class LiftStart implements State {
-	
+
 	private LiftModel m;
-	
+
 	public LiftStart(LiftModel m) {
 		this.m = m;
 	}
-	
+
 	@Override
-	public void doAction(boolean running, Object obj) {
-		
+	public synchronized void doAction(boolean running, Object obj) {
+
 		if ( !(obj instanceof ArrayList) ) {	
 
 			throw new IllegalArgumentException("Object passed must be of type List<Button>.");	
@@ -32,7 +33,7 @@ public class LiftStart implements State {
 			for (Object aList : (List<?>) obj) {	
 
 				//Check list type before casting	
-			    cls = aList.getClass();	
+				cls = aList.getClass();	
 			}	
 
 			if ( cls == Button.class ) {	
@@ -41,58 +42,63 @@ public class LiftStart implements State {
 
 				@SuppressWarnings("unchecked") //Check performed using reflection, evaluation occurs at runtime	
 				List<Button> b = (List<Button>) obj;	
-				
-				if (!running) { TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor()); }
-				
-				else {
-					
+
+				if (!running) {
+					TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor());
+				} else {
 					for (Button button : b) {
 						if (button.getState() == button.buttonPressedState) {
 							if (m.getCurrentFloor() == button.getButtonFloor()) {
 								m.setDoorOpen(true);
-								TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Arrived");
+								
+								if (m.passengers().isEmpty()) {
+									TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Arrived");
+								}
 								
 								//People Enter - sleep thread for 1 second
 								for (Person passenger: m.passengers()) {
-									
+
 									try {
-										
-										TextView.print("Passenger " + passenger.getID() + " entering");
+										if (!m.checkPerson(passenger.getID())) {
+											TextView.print("Passenger " + (passenger.getID()+1) + "\tFloor: " + passenger.getStartFloor() + "\t|\tEntering Lift");
+										}
 										Thread.sleep(1000);
-										
+
 									} catch (InterruptedException e) {
-										
+
 										TextView.printError("Passenger Entry Thread Interupted", e.getMessage());
-										
+
 									}
-									
+
 								}
-								
+
 								synchronized(m.persons()) {
 									//Lambda Stream to detect people awaiting to board
 									List<Person> peopleOnFloor = m.persons().stream().filter(p -> p.getStartFloor() == m.getCurrentFloor()).collect(Collectors.toList());
-									
+
 									for (Person person : peopleOnFloor) {
-										
-										TextView.print(person.getID() + " ON FLOOR");
-										
+
+//										TextView.print("Passenger " + (person.getID()+1) + "\tFloor: " + person.getStartFloor() + "\t|\tWaiting for Lift");
+
+										if (!m.passengerWeightNotExceeded(person.getWeight())) {
+											TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Full");
+											m.postUpdate(m.liftMovingState);
+											break;
+										}
+
 									}
-									
+
 									if (peopleOnFloor.isEmpty()) {
-										
-										TextView.print("BEGIN MOVING");
+
 										m.postUpdate(m.liftMovingState);
-										
+
 									}
 								}
 
-								//!!!IF PASSENGERS ON FLOOR WAITING DO NOT CHANGE STATE - JUST LOOP - UNLESS WEIGHT LIMIT REACHED
-								
 							} else {
-//								TextView.print("Lift\t\tSTART\t\t|\tLift Going to Passenger");
-//								m.setDoorOpen(true);
-//								
-//								m.postUpdate(m.liftMovingState);
+//								TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Collecting Passengers");
+//								m.setDoorOpen(false);
+//								m.postUpdate(m.liftStartState);
 							}
 						}
 					}
@@ -112,44 +118,20 @@ public class LiftStart implements State {
 
 		}
 	}
-	
-	public static String convertToTitleCase(String text) {
-		
-	    if (text == null || text.isEmpty()) {
-	        return text;
-	    }
-	 
-	    StringBuilder converted = new StringBuilder();
-	 
-	    boolean convertNext = true;
-	    for (char ch : text.toCharArray()) {
-	        if (Character.isSpaceChar(ch)) {
-	            convertNext = true;
-	        } else if (convertNext) {
-	            ch = Character.toTitleCase(ch);
-	            convertNext = false;
-	        } else {
-	            ch = Character.toLowerCase(ch);
-	        }
-	        converted.append(ch);
-	    }
-	 
-	    return converted.toString();
-	}
-		
-		//Start Phase
-		// If required, change to Floor of Button Press --> Moving Phase
-		// Open Doors
-		// Allow Passenger Entry (1 Second p/p)
-		
-		//Moving Phase
-		// Close Doors
-		// Change Floor to required Floor
-		// Wait 5 Seconds
-		
-		//End Phase
-		// Open Doors
-		// Allow Passenger Exit (1 Second p/p)
-		// Close Doors
-	
+
+	//Start Phase
+	// If required, change to Floor of Button Press --> Moving Phase
+	// Open Doors
+	// Allow Passenger Entry (1 Second p/p)
+
+	//Moving Phase
+	// Close Doors
+	// Change Floor to required Floor
+	// Wait 5 Seconds
+
+	//End Phase
+	// Open Doors
+	// Allow Passenger Exit (1 Second p/p)
+	// Close Doors
+
 }

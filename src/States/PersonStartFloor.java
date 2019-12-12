@@ -55,15 +55,22 @@ public class PersonStartFloor implements State, PersonState, Callable<Integer> {
 				
 				if (running && b_instance.getState() == b_instance.buttonUnpressedState) {
 					
-					TextView.print("Passenger " + p.getID() + "\tFloor: " + p.getStartFloor() + "\t|\tPushing Button " + b_instance.getButtonFloor());
+					TextView.print("Passenger " + (p.getID()+1) + "\tFloor: " + p.getStartFloor() + "\t|\tPushing Button " + b_instance.getButtonFloor());
 					
 					b_instance.postUpdate(b.get(p.getStartFloor()).buttonPressedState);
 					
 				} else if (running && b_instance.getState() == b_instance.buttonPressedState) {
-						if (m.getState().equals(m.liftStartState) && m.getCurrentFloor() == p.getStartFloor() && m.getDoorOpen() && !m.checkPassenger(p.getID()) && m.checkPerson(p.getID())) {
-							m.addPassenger(p);
-							m.removePerson(p.getID());
+						if (m.getState().equals(m.liftStartState) && 
+								m.getCurrentFloor() == p.getStartFloor() && 
+								m.getDoorOpen() && 
+								!m.checkPassenger(p.getID()) && 
+								m.checkPerson(p.getID()) &&
+								m.passengerWeightNotExceeded(p.getWeight()) ) {
+							
+							m.passengers().add(p);
+							m.persons().remove(p);
 						}
+						
 				}
 
 				//	END | Successful Button State Activation Process	
