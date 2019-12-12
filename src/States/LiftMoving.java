@@ -44,8 +44,20 @@ public class LiftMoving implements State {
 				
 				if (running) {
 					
-					m.setCurrentFloor(m.minFloor());
-					m.setDoorOpen(false);
+					for (Button button : b) {
+						if (button.getState() == button.buttonPressedState) {
+							if (m.getCurrentFloor() == button.getButtonFloor()) {
+								
+								TextView.print("Lift\t\tMOVING\t\t|\tLift in transit");
+
+							} else {
+//								TextView.print("Lift\t\tSTART\t\t|\tLift Going to Passenger");
+//								m.setDoorOpen(true);
+//								
+//								m.postUpdate(m.liftMovingState);
+							}
+						}
+					}
 					
 				} else {
 					

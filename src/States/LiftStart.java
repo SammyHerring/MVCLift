@@ -2,9 +2,11 @@ package States;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import LiftComponents.LiftModel;
 import Subjects.Button;
+import Subjects.Person;
 import Views.TextView;
 
 public class LiftStart implements State {
@@ -40,15 +42,60 @@ public class LiftStart implements State {
 				@SuppressWarnings("unchecked") //Check performed using reflection, evaluation occurs at runtime	
 				List<Button> b = (List<Button>) obj;	
 				
-				if (!running) { TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor()); }
+				if (!running) { TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor()); }
 				
-				if (running) {
+				else {
 					
-					m.setCurrentFloor(m.minFloor());
-					m.setDoorOpen(false);
-					
-				} else {
-					
+					for (Button button : b) {
+						if (button.getState() == button.buttonPressedState) {
+							if (m.getCurrentFloor() == button.getButtonFloor()) {
+								m.setDoorOpen(true);
+								TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Arrived");
+								
+								//People Enter - sleep thread for 1 second
+								for (Person passenger: m.passengers()) {
+									
+									try {
+										
+										TextView.print("Passenger " + passenger.getID() + " entering");
+										Thread.sleep(1000);
+										
+									} catch (InterruptedException e) {
+										
+										TextView.printError("Passenger Entry Thread Interupted", e.getMessage());
+										
+									}
+									
+								}
+								
+								synchronized(m.persons()) {
+									//Lambda Stream to detect people awaiting to board
+									List<Person> peopleOnFloor = m.persons().stream().filter(p -> p.getStartFloor() == m.getCurrentFloor()).collect(Collectors.toList());
+									
+									for (Person person : peopleOnFloor) {
+										
+										TextView.print(person.getID() + " ON FLOOR");
+										
+									}
+									
+									if (peopleOnFloor.isEmpty()) {
+										
+										TextView.print("BEGIN MOVING");
+										m.postUpdate(m.liftMovingState);
+										
+									}
+								}
+
+								//!!!IF PASSENGERS ON FLOOR WAITING DO NOT CHANGE STATE - JUST LOOP - UNLESS WEIGHT LIMIT REACHED
+								
+							} else {
+//								TextView.print("Lift\t\tSTART\t\t|\tLift Going to Passenger");
+//								m.setDoorOpen(true);
+//								
+//								m.postUpdate(m.liftMovingState);
+							}
+						}
+					}
 				}
 
 				//	END | Successful Button State Activation Process	
@@ -89,9 +136,6 @@ public class LiftStart implements State {
 	 
 	    return converted.toString();
 	}
-		
-//		m.setCurrentFloor(m.requestedFloor());
-//		m.setDoorOpen(true);
 		
 		//Start Phase
 		// If required, change to Floor of Button Press --> Moving Phase

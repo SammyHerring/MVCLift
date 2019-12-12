@@ -1,5 +1,6 @@
 package LiftComponents;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import States.*;
@@ -14,6 +15,7 @@ public final class LiftModel implements Subject, State {
 	private int minFloor;
 	private int maxFloor;
 	private List<Person> passengers;
+	private List<Person> persons;
 	
     private static LiftModel INSTANCE;
    
@@ -38,32 +40,58 @@ public final class LiftModel implements Subject, State {
     	this.liftMovingState = new LiftMoving(this);
     	this.liftEndState = new LiftEnd(this);
     	
-    	this.passengers = new ArrayList<>();
+    	this.passengers = Collections.synchronizedList(new ArrayList<Person>());
+    	this.persons = Collections.synchronizedList(new ArrayList<Person>());
     	
     	this.observers = new ArrayList<>();
     	
     	this.postUpdate(liftInitState);
     }
-    
-	public void changeFloor(int destinationFloor) {
-		if (this.currentFloor == destinationFloor) {
-			//do nothing else - change floor
-		}
-	}
 	
 	///	START 	| PASSENGER MANAGEMENT
 	
 	public void addPassenger(Person p) {
-		passengers.add(p);
+		passengers.add(p); //Add by reference
 	}
 	
-	public Person addPassengerRef(Person p) {
-		passengers.add(p);
-		return p;
+	public void removePassenger(int passengerID) {
+			for (Person passenger : passengers) {
+				if (passenger.getID() == passengerID) {
+					passengers.remove(passenger); //Remove by Object Reference from ID
+				}
+			}
 	}
 	
-	public void removePassenger(int index) {
-		passengers.remove(index); //Remove by index
+	public boolean checkPassenger(int passengerID) {
+			for (Person passenger : passengers) {
+				if (passenger.getID() == passengerID) {
+					return true;
+				}
+			}
+			return false;
+	}
+	
+	public void addPerson(Person p) {
+		persons.add(p); //Add by reference
+	}
+	
+	public void removePerson(int personID) {
+			for (Person person : persons) {
+				if (person.getID() == personID) {
+					TextView.print("Person "+personID+" Removed");
+					persons.remove(personID); //Remove by Object Reference from ID
+				}
+			}
+//			TextView.printError("Person Removal", "Person "+personID+" Not Removed");
+	}
+	
+	public boolean checkPerson(int personID) {
+			for (Person person : persons) {
+				if (person.getID() == personID) {
+					return true;
+				}
+			}
+			return false;
 	}
 	
 	///	END		| PASSENGER MANAGEMENT
@@ -122,6 +150,8 @@ public final class LiftModel implements Subject, State {
     }
     
     public List<Person> passengers() { return this.passengers; }
+    
+    public List<Person> persons() { return this.persons; }
     
     /// END		|	ACCESSOR & MUTATOR METHODS
     

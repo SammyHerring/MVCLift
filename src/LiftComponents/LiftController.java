@@ -20,7 +20,7 @@ public class LiftController {
 	
 	public LiftController(LiftView v, LiftModel m, List<Button> b) {
 		
-		//Scenario Setups
+		//Scenario Setups		
 		//Scenario 1
 		ScenarioFloor s1f0 = new ScenarioFloor(1, 0, 1, 0); //Scenario Floor 0 --> Number of People, Source, Destination, Instance
 		List<ScenarioFloor> s1floors = Arrays.asList(new ScenarioFloor[]{s1f0});
@@ -62,21 +62,28 @@ public class LiftController {
 			v.update();
 		}
 		
-		for (Person passenger : m.passengers()) {
-			v.setSubject(passenger);
+		for (Person person : m.persons()) {
+			v.setSubject(person);
 			v.update();
 		}
 		
 		//Run actual scenario simulation
 		try {
+			TextView.print("--\tScenario " + (s.getID()+1) + " Starting\t--");
 			
-			runScenario(m, b, s);
+			while(!m.getState().equals(m.liftEndState)) {
+				runScenario(m, b, s);
+			}
 			
 		} catch (Exception ex) {
 			
 			TextView.printError("Scenario Exception", ex.getMessage());
 			
+		} finally {
+			TextView.print("--\tScenario " + (s.getID()+1) + " Finished\t--");
 		}
+		
+		TextView.print("--\tSimulation Finished\t--");
 		
 	}
 
@@ -92,19 +99,16 @@ public class LiftController {
 			TextView.print(floors.get(index).getInfo());
 			
 			//Iterate through number of passengers
-			for (int passengers = 0; passengers < floors.get(index).getPeople(); passengers = passengers + 1) {
-				
-				Person p = m.addPassengerRef(new Person(floors.get(index).getFloorStart(), floors.get(index).getFloorEnd()));
-				p.register(v);
+			for (int personIndex = 0; personIndex < floors.get(index).getPeople(); personIndex = personIndex + 1) {
+				m.addPerson(new Person(floors.get(index).getFloorStart(), floors.get(index).getFloorEnd(), m));
+				m.persons().get(personIndex).register(v);
 			}
 			
 		}
 		 
 	}
 	
-	public void runScenario(LiftModel m, List<Button> b, Scenario s) throws InterruptedException, ExecutionException, TimeoutException, Exception {
-		
-		TextView.print("--\tScenario " + (s.getID()+1) + " Starting\t--");
+	public synchronized void runScenario(LiftModel m, List<Button> b, Scenario s) throws InterruptedException, ExecutionException, TimeoutException, Exception {
 		
 		ExecutorService executor = null;
 		
@@ -115,10 +119,10 @@ public class LiftController {
 			
 			List<Future<?>> subjectTasks = new ArrayList<>();
 			
-			for (Person passenger : m.passengers() ) {
+			for (Person person : m.persons() ) {
 				
 	            Future<?> passengerFuture = executor.submit(() -> {
-	                v.setSubject(passenger);
+	                v.setSubject(person);
 	                v.update();
 	            });
 	            
@@ -145,19 +149,16 @@ public class LiftController {
             
             for (Future<?> future : subjectTasks) {
                 while (!future.isDone()) {
-                	Thread.sleep(100);
+                	Thread.sleep(500);
                 }
             }
 			
 		} finally {
 			
 			v.end();
-			TextView.print("--\tScenario " + (s.getID()+1) + " Finished\t--");
 			executor.shutdown();
 			
 		}
-
-		TextView.print("--\tSimulation Finished\t--");
 		
 	}
 	

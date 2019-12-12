@@ -40,15 +40,18 @@ public class LiftInit implements State {
 				@SuppressWarnings("unchecked") //Check performed using reflection, evaluation occurs at runtime	
 				List<Button> b = (List<Button>) obj;	
 				
-				if (!running) { TextView.print("Lift\t\tINIT\t\t|\tDoor Open: " + convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor()); }
-				
-				if (running) {
-					
+				if (!running) {
+					TextView.print("Lift\t\tINIT\t\t|\tDoor Open: " + convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor()); 
 					m.setCurrentFloor(m.minFloor());
 					m.setDoorOpen(false);
-					
-				} else {
-					
+				}
+				
+				if (running) {
+					for (Button button : b) {
+						if (button.getState() == button.buttonPressedState) {
+							m.postUpdate(m.liftStartState);
+						}
+					}
 				}
 
 				//	END | Successful Button State Activation Process	

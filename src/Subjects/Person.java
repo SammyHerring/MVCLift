@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import LiftComponents.LiftModel;
 import States.*;
 
 public class Person implements Subject {
@@ -16,6 +17,8 @@ public class Person implements Subject {
 	private Integer startFloor;
 	private Integer endFloor;
 	
+	private LiftModel m;
+	
 	private List<Observer> observers;
 	private final Object MUTEX = new Object();
 	private boolean changed;
@@ -25,12 +28,14 @@ public class Person implements Subject {
 	public final State personMovingFloorState;
 	public final State personEndFloorState;
 	
-	public Person(Integer startFloor, Integer endFloor) {
+	public Person(Integer startFloor, Integer endFloor, LiftModel m) {
 		
     	this.weight = weightFloat();
     	
 		this.startFloor = startFloor;
 		this.endFloor = endFloor;
+		
+		this.m = m;
 		
 		this.personStartFloorState = new PersonStartFloor(this);
 		this.personMovingFloorState = new PersonMovingFloor(this);
@@ -62,6 +67,10 @@ public class Person implements Subject {
     public Integer getStartFloor() { return this.startFloor; }
     
     public Integer getEndFloor() { return this.endFloor; }
+    
+    public LiftModel getLift() { return this.m; }
+    
+    public Person getPerson() { return this; }
     
     public State getState() { return this.personState; }
 	
