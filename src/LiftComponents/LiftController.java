@@ -2,7 +2,6 @@ package LiftComponents;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -16,7 +15,6 @@ public class LiftController {
 	
 	private  LiftView v;
 	private LiftModel m;
-	private List<Button> b;
 	
 	public LiftController(LiftView v, LiftModel m, List<Button> b) {
 		
@@ -38,7 +36,7 @@ public class LiftController {
 		Scenario s3 = new Scenario(s3floors, m.liftInitState);
 		
 		//Scenario in use
-		Scenario s = s1;
+		Scenario s = s3;
 		
 		// Subjects --> Lift Model, Buttons, People
 		// Observers --> Lift View
@@ -46,8 +44,6 @@ public class LiftController {
 		//Generate required objects
 		this.v = v; //	LiftView	| Main Observer
 		this.m = m; //	LiftModel	| Main Subject
-		this.b = b; //	Buttons		| Secondary Subject
-
 		//Register observers to the subject
 		//Register model to view and initialise model
 		v.update();

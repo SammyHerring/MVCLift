@@ -2,12 +2,9 @@ package States;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import CustomDataTypes.Generic;
 import LiftComponents.LiftModel;
 import Subjects.Button;
-import Subjects.Person;
 import Views.TextView;
 
 public class LiftMoving implements State {

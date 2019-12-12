@@ -5,8 +5,6 @@ import java.util.Date;
 
 public class TextView {
 	
-	private boolean preNL = false; //Before text new line carriage return
-	
 	//Overloading Methods for Print to support optional arguments
 	public static void print(String text) {
 		System.out.println(getCurrentTimeStamp()+"\t\t"+text);

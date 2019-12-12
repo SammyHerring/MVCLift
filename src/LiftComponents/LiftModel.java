@@ -72,7 +72,7 @@ public final class LiftModel implements Subject, State {
 		}
 	}
 	
-	public Integer currentWeight() {
+	private Integer currentWeight() {
 		Integer w = 0;
 		synchronized (passengers) {
 			for (Person person : passengers) {
