@@ -44,8 +44,9 @@ public class LiftMoving implements State {
 
 					for (Button button : b) {
 						if (button.getState() == button.buttonPressedState) {
-							if (m.getCurrentFloor() == button.getButtonFloor()) {
+							if (m.passengers().get(0).getStartFloor() == button.getButtonFloor()) {
 								m.setDoorOpen(false);
+								//button.postUpdate(button.buttonUnpressedState);
 								TextView.print("Lift\t\tMOVING\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tLift in Transit");
 
 
@@ -62,10 +63,14 @@ public class LiftMoving implements State {
 
 									TextView.printError("Passenger Entry Thread Interupted", e.getMessage());
 
+								} finally {
+									
+									m.setCurrentFloor(m.passengers().get(0).getEndFloor());
+									m.setDoorOpen(true);
+									TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Arrived");
+									m.postUpdate(m.liftEndState);
+									
 								}
-
-								m.postUpdate(m.liftEndState);
-
 							}
 
 						}

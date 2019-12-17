@@ -10,11 +10,11 @@ import Subjects.Button;
 import Subjects.Person;
 import Views.TextView;
 
-public class LiftEnd implements State {
+public class LiftEndScenario implements State {
 
 	private LiftModel m;
 
-	public LiftEnd(LiftModel m) {
+	public LiftEndScenario(LiftModel m) {
 		this.m = m;
 	}
 
@@ -55,11 +55,10 @@ public class LiftEnd implements State {
 								
 								//People Enter - sleep thread for 1 second
 								for (Person passenger: m.passengers()) {
-									
+
 									try {
-										if (!m.checkPerson(passenger.getID()) && m.checkPassenger(passenger.getID())) {
-											m.passengers().remove(passenger);
-											TextView.print("Passenger " + (passenger.getID()+1) + "\tFloor: " + passenger.getStartFloor() + "\t|\tExited Lift");
+										if (!m.checkPerson(passenger.getID())) {
+											TextView.print("Passenger " + (passenger.getID()+1) + "\tFloor: " + passenger.getStartFloor() + "\t|\tEntering Lift");
 										}
 										Thread.sleep(1000);
 
@@ -70,17 +69,27 @@ public class LiftEnd implements State {
 									}
 
 								}
-																
-								if (m.persons().isEmpty()) {
-									m.setDoorOpen(false);
-									TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tLift Journey End");
-									m.postUpdate(m.liftEndScenarioState);
-								} else {
-									TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tAwaiting Passengers");
-									m.postUpdate(m.liftStartState);
+
+								synchronized(m.persons()) {
+									//Lambda Stream to detect people awaiting to board
+									List<Person> peopleOnFloor = m.persons().stream().filter(p -> p.getStartFloor() == m.getCurrentFloor()).collect(Collectors.toList());
+
+									for (Person person : peopleOnFloor) {
+
+										if (!m.passengerWeightNotExceeded(person.getWeight())) {
+											TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Full");
+											m.postUpdate(m.liftMovingState);
+											break;
+										}
+
+									}
+
+									if (peopleOnFloor.isEmpty()) {
+
+										m.postUpdate(m.liftMovingState);
+
+									}
 								}
-								
-								
 
 							} else {
 //								TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Collecting Passengers");

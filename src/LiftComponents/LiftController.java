@@ -67,7 +67,7 @@ public class LiftController {
 			
 			TextView.print("--\tScenario " + (s.getID()+1) + " Starting\t--");
 			
-			while(!m.getState().equals(m.liftEndState)) {
+			while(!m.getState().equals(m.liftEndScenarioState)) {
 				runScenario(m, b, s);
 			}
 			

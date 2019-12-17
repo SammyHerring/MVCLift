@@ -28,7 +28,8 @@ public final class LiftModel implements Subject, State {
 	public final State liftInitState;
 	public final State liftStartState;
 	public final State liftMovingState;
-	public final State liftEndState;
+	public final State liftEndState; //End of Lift Floor Movement
+	public final State liftEndScenarioState; //End of entire Lift Scenario
      
     private LiftModel(int maxWeight, int minFloor, int maxFloor) {
     	
@@ -40,6 +41,7 @@ public final class LiftModel implements Subject, State {
     	this.liftStartState = new LiftStart(this);
     	this.liftMovingState = new LiftMoving(this);
     	this.liftEndState = new LiftEnd(this);
+    	this.liftEndScenarioState = new LiftEndScenario(this);
     	
     	this.passengers = new CopyOnWriteArrayList<Person>(new ArrayList<Person>());
     	this.persons = new CopyOnWriteArrayList<Person>(new ArrayList<Person>());
