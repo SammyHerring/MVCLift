@@ -44,51 +44,41 @@ public class LiftEnd implements State {
 				if (!running) {
 					TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor());
 				} else {
-					for (Button button : b) {
-						if (button.getState() == button.buttonPressedState) {
-							if (m.getCurrentFloor() == button.getButtonFloor()) {
-								m.setDoorOpen(true);
-								
-								if (m.passengers().isEmpty()) {
-									TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Arrived");
-								}
-								
-								//People Enter - sleep thread for 1 second
-								for (Person passenger: m.passengers()) {
-									
-									try {
-										if (!m.checkPerson(passenger.getID()) && m.checkPassenger(passenger.getID())) {
-											m.passengers().remove(passenger);
-											TextView.print("Passenger " + (passenger.getID()+1) + "\tFloor: " + passenger.getStartFloor() + "\t|\tExited Lift");
-										}
-										Thread.sleep(1000);
+					m.setDoorOpen(true);
 
-									} catch (InterruptedException e) {
-
-										TextView.printError("Passenger Entry Thread Interupted", e.getMessage());
-
-									}
-
-								}
-																
-								if (m.persons().isEmpty()) {
-									m.setDoorOpen(false);
-									TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tLift Journey End");
-									m.postUpdate(m.liftEndScenarioState);
-								} else {
-									TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tAwaiting Passengers");
-									m.postUpdate(m.liftStartState);
-								}
-								
-								
-
-							} else {
-//								TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Collecting Passengers");
-//								m.setDoorOpen(false);
-//								m.postUpdate(m.liftStartState);
-							}
-						}
+					if (m.passengers().isEmpty()) {
+						TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Arrived");
 					}
+
+					//People Enter - sleep thread for 1 second
+					for (Person passenger: m.passengers()) {
+
+						try {
+							if (!m.checkPerson(passenger.getID()) && m.checkPassenger(passenger.getID())) {
+								m.passengers().remove(passenger);
+								TextView.print("Passenger " + (passenger.getID()+1) + "\tFloor: " + passenger.getStartFloor() + "\t|\tExited Lift");
+							}
+							Thread.sleep(1000);
+
+						} catch (InterruptedException e) {
+
+							TextView.printError("Passenger Entry Thread Interupted", e.getMessage());
+
+						}
+
+					}
+
+					if (m.persons().isEmpty()) {
+						m.setDoorOpen(false);
+						TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tLift Journey End");
+						m.postUpdate(m.liftEndScenarioState);
+					} else {
+						TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tAwaiting Passengers");
+						m.postUpdate(m.liftStartState);
+					}
+
+
+
 				}
 
 			} else if (cls == null ) {	

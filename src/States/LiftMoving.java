@@ -46,7 +46,7 @@ public class LiftMoving implements State {
 						if (button.getState() == button.buttonPressedState) {
 							if (m.passengers().get(0).getStartFloor() == button.getButtonFloor()) {
 								m.setDoorOpen(false);
-								//button.postUpdate(button.buttonUnpressedState);
+//								button.postUpdate(button.buttonUnpressedState);
 								TextView.print("Lift\t\tMOVING\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tLift in Transit");
 
 
