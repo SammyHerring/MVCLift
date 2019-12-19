@@ -3,21 +3,22 @@ package States;
 import java.util.ArrayList;
 import java.util.List;
 
+import CustomDataTypes.Generic;
 import LiftComponents.LiftModel;
 import Subjects.Button;
 import Views.TextView;
 
 public class LiftInit implements State {
-	
+
 	private LiftModel m;
-	
+
 	public LiftInit(LiftModel m) {
 		this.m = m;
 	}
-	
+
 	@Override
 	public synchronized void doAction(boolean running, Object obj) {
-		
+
 		if ( !(obj instanceof ArrayList) ) {	
 
 			throw new IllegalArgumentException("Object passed must be of type List<Button>.");	
@@ -30,23 +31,21 @@ public class LiftInit implements State {
 			for (Object aList : (List<?>) obj) {	
 
 				//Check list type before casting	
-			    cls = aList.getClass();	
+				cls = aList.getClass();	
 			}	
 
 			if ( cls == Button.class ) {	
 
-				//	START | Successful Button State Activation Process	
+				///	START | Lift INIT State View Update
 
 				@SuppressWarnings("unchecked") //Check performed using reflection, evaluation occurs at runtime	
 				List<Button> b = (List<Button>) obj;	
-				
+
 				if (!running) {
-					TextView.print("Lift\t\tINIT\t\t|\tDoor Open: " + convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor()); 
+					TextView.print("Lift\t\tINIT\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor()); 
 					m.setCurrentFloor(m.minFloor());
 					m.setDoorOpen(false);
-				}
-				
-				if (running) {
+				} else {
 					for (Button button : b) {
 						if (button.getState() == button.buttonPressedState) {
 							m.postUpdate(m.liftStartState);
@@ -54,7 +53,7 @@ public class LiftInit implements State {
 					}
 				}
 
-				//	END | Successful Button State Activation Process	
+				///	END | Lift INIT State View Update	
 
 			} else if (cls == null ) {	
 
@@ -67,29 +66,5 @@ public class LiftInit implements State {
 			}	
 
 		}
-	}
-	
-	public static String convertToTitleCase(String text) {
-		
-	    if (text == null || text.isEmpty()) {
-	        return text;
-	    }
-	 
-	    StringBuilder converted = new StringBuilder();
-	 
-	    boolean convertNext = true;
-	    for (char ch : text.toCharArray()) {
-	        if (Character.isSpaceChar(ch)) {
-	            convertNext = true;
-	        } else if (convertNext) {
-	            ch = Character.toTitleCase(ch);
-	            convertNext = false;
-	        } else {
-	            ch = Character.toLowerCase(ch);
-	        }
-	        converted.append(ch);
-	    }
-	 
-	    return converted.toString();
 	}
 }

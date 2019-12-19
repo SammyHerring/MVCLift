@@ -7,21 +7,29 @@ public class Generic {
 			return text;
 		}
 
-		StringBuilder converted = new StringBuilder();
+		StringBuilder titleString = new StringBuilder();
 
 		boolean convertNext = true;
-		for (char ch : text.toCharArray()) {
-			if (Character.isSpaceChar(ch)) {
+		
+		for (char c : text.toCharArray()) {
+			
+			if (Character.isSpaceChar(c)) {
+				
 				convertNext = true;
+				
 			} else if (convertNext) {
-				ch = Character.toTitleCase(ch);
+				
+				c = Character.toTitleCase(c);
 				convertNext = false;
+						
 			} else {
-				ch = Character.toLowerCase(ch);
+				
+				c = Character.toLowerCase(c);
+				
 			}
-			converted.append(ch);
+			
+			titleString.append(c);
 		}
-
-		return converted.toString();
+		return titleString.toString();
 	}
 }

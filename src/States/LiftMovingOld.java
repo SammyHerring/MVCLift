@@ -7,11 +7,11 @@ import LiftComponents.LiftModel;
 import Subjects.Button;
 import Views.TextView;
 
-public class LiftMoving implements State {
+public class LiftMovingOld implements State {
 
 	private LiftModel m;
 
-	public LiftMoving(LiftModel m) {
+	public LiftMovingOld(LiftModel m) {
 		this.m = m;
 	}
 

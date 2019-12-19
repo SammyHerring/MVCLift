@@ -3,7 +3,7 @@ package States;
 import Subjects.Person;
 import Views.TextView;
 
-public class PersonEndFloor implements State, PersonState, Runnable {
+public class PersonEndFloor implements State, PersonState {
 	
 	private final Person p;
 	
@@ -20,7 +20,7 @@ public class PersonEndFloor implements State, PersonState, Runnable {
 	@Override
 	public void doAction(boolean running, Object obj) {
 		
-		TextView.print("Passenger " + (p.getID()+1) + "\t"+ getPersonAction() + " \t|\tStart: " + p.getStartFloor() + "\t End: " + p.getEndFloor());
+		if (!running) { TextView.print("Passenger " + (p.getID()+1) + "\t"+ getPersonAction() + " \t|\tStart: " + p.getStartFloor() + "\t End: " + p.getEndFloor()); }
 	}
 	
 	@Override
@@ -28,11 +28,4 @@ public class PersonEndFloor implements State, PersonState, Runnable {
 
 	@Override
 	public void setPersonAction(PersonAction personAction) { this.personAction = personAction; }
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

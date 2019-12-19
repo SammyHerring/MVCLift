@@ -36,69 +36,73 @@ public class LiftStart implements State {
 				cls = aList.getClass();	
 			}	
 
-			if ( cls == Button.class ) {	
+			if ( cls == Button.class ) {
 
 				@SuppressWarnings("unchecked") //Check performed using reflection, evaluation occurs at runtime	
-				List<Button> b = (List<Button>) obj;	
+				List<Button> b = (List<Button>) obj;
+
+				///	START | Lift START State View Update
 
 				if (!running) {
 					TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor());
 				} else {
 					for (Button button : b) {
-						if (button.getState() == button.buttonPressedState) {
-							if (m.getCurrentFloor() == button.getButtonFloor()) {
-								m.setDoorOpen(true);
-								
-								if (m.passengers().isEmpty()) {
-									TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Arrived");
-								}
-								
-								//People Enter - sleep thread for 1 second
-								for (Person passenger: m.passengers()) {
 
-									try {
-										if (!m.checkPerson(passenger.getID())) {
-											TextView.print("Passenger " + (passenger.getID()+1) + "\tFloor: " + passenger.getStartFloor() + "\t|\tEntering Lift");
-										}
-										Thread.sleep(1000);
-
-									} catch (InterruptedException e) {
-
-										TextView.printError("Passenger Entry Thread Interupted", e.getMessage());
-
-									}
-
-								}
-
-								synchronized(m.persons()) {
-									//Lambda Stream to detect people awaiting to board
-									List<Person> peopleOnFloor = m.persons().stream().filter(p -> p.getStartFloor() == m.getCurrentFloor()).collect(Collectors.toList());
-
-									for (Person person : peopleOnFloor) {
-
-										if (!m.passengerWeightNotExceeded(person.getWeight())) {
-											TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Full");
-											m.postUpdate(m.liftMovingState);
-											break;
-										}
-
-									}
-
-									if (peopleOnFloor.isEmpty()) {
-
-										m.postUpdate(m.liftMovingState);
-
-									}
-								}
-
-							} else {
-//								TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Collecting Passengers");
-//								m.setDoorOpen(false);
-//								m.postUpdate(m.liftStartState);
+						if ((button.getState() == button.buttonPressedState) &&
+								(m.getCurrentFloor() == button.getButtonFloor())) {
+							
+							//Open Doors
+							m.setDoorOpen(true);
+							
+							//Notification of Arrival
+							//IF NO PASSENGERS HAVE ENTERED AND ARE WAITING
+							if (m.passengers().isEmpty() && !(m.persons().isEmpty())) {
+								TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Arrived");
 							}
+							
+							//Passengers Enter - 1 second p/p
+							for (Person passenger: m.passengers()) {
+
+								try {
+									if (!m.checkPerson(passenger.getID())) {
+										TextView.print("Passenger " + (passenger.getID()+1) + "\tFloor: " + passenger.getStartFloor() + "\t|\tEntering Lift");
+									}
+									Thread.sleep(1000);
+
+								} catch (InterruptedException e) {
+
+									TextView.printError("Passenger Entry Thread Interupted", e.getMessage());
+
+								}
+
+							}
+
+							synchronized(m.persons()) {
+								//Lambda Stream to detect people awaiting to board
+								List<Person> peopleOnFloor = m.persons().stream().filter(p -> p.getStartFloor() == m.getCurrentFloor()).collect(Collectors.toList());
+
+								for (Person person : peopleOnFloor) {
+
+									if (!m.passengerWeightNotExceeded(person.getWeight())) {
+										TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Full");
+										m.postUpdate(m.liftMovingState);
+										break;
+									}
+
+								}
+
+								if (peopleOnFloor.isEmpty()) {
+
+									m.postUpdate(m.liftMovingState);
+
+								}
+							}
+
 						}
 					}
 				}
+
+				///	END | Lift START State View Update
 
 			} else if (cls == null ) {	
 
@@ -112,20 +116,4 @@ public class LiftStart implements State {
 
 		}
 	}
-
-	//Start Phase
-	// If required, change to Floor of Button Press --> Moving Phase
-	// Open Doors
-	// Allow Passenger Entry (1 Second p/p)
-
-	//Moving Phase
-	// Close Doors
-	// Change Floor to required Floor
-	// Wait 5 Seconds
-
-	//End Phase
-	// Open Doors
-	// Allow Passenger Exit (1 Second p/p)
-	// Close Doors
-
 }
