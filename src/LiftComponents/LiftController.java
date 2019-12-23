@@ -35,8 +35,14 @@ public class LiftController {
 		List<ScenarioFloor> s3floors = Arrays.asList(new ScenarioFloor[]{s3f0, s3f1});
 		Scenario s3 = new Scenario(s3floors, m.liftInitState);
 		
+		//Scenario 3
+		ScenarioFloor s4f0 = new ScenarioFloor(15, 0, 1, 0); //Scenario Floor 0 --> Number of People, Source, Destination, Instance
+		ScenarioFloor s4f1 = new ScenarioFloor(15, 1, 0, 0); //Scenario Floor 1 --> Number of People, Source, Destination, Instance
+		List<ScenarioFloor> s4floors = Arrays.asList(new ScenarioFloor[]{s4f0, s4f1});
+		Scenario s4 = new Scenario(s4floors, m.liftInitState);
+		
 		//Scenario in use
-		Scenario s = s3;
+		Scenario s = s4;
 		
 		// Subjects --> Lift Model, Buttons, People
 		// Observers --> Lift View

@@ -34,9 +34,11 @@ public class LiftMoving implements State {
 			}	
 
 			if ( cls == Button.class ) {
-				
+
 				@SuppressWarnings("unchecked") //Check performed using reflection, evaluation occurs at runtime	
-				List<Button> b = (List<Button>) obj;	
+				List<Button> b = (List<Button>) obj;
+
+				///	START | Lift MOVING State View Update
 
 				if (!running) {
 					TextView.print("Lift\t\tMOVING\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor());
@@ -44,40 +46,74 @@ public class LiftMoving implements State {
 
 					for (Button button : b) {
 						if (button.getState() == button.buttonPressedState) {
-							if (m.passengers().get(0).getStartFloor() == button.getButtonFloor()) {
+
+							//CHECK IF LIFT IS EMPTY
+							if (!m.passengers().isEmpty()) {
+
+								//IF NOT EMPTY, MOVE LIFT TO FLOOR REQUESTED BY PASSENGERS
+								if (m.passengers().get(0).getStartFloor() == button.getButtonFloor()) {
+
+									m.setDoorOpen(false);
+									TextView.print("Lift\t\tMOVING\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tLift in Transit");
+
+									//ACTUAL LIFT MOVEMENT
+									//WAIT FOR MOVEMENT TIME BEFORE UPDATING LIFT MODEL
+									try {
+
+										int travelTime = 5; //Seconds
+
+										for (int progress = 0; progress < travelTime; progress = progress + 1) {
+											animateMovement(progress, travelTime, m);
+											Thread.sleep(1000);
+										}
+
+									} catch (InterruptedException e) {
+
+										TextView.printError("Passenger Entry Thread Interupted", e.getMessage());
+
+									} finally {
+
+										button.postUpdate(button.buttonUnpressedState);
+										m.setCurrentFloor(m.passengers().get(0).getEndFloor()); //Prioritise lift movement to first passenger to enter lift
+										m.setDoorOpen(true);
+										TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Arrived");
+										m.postUpdate(m.liftEndState);
+
+									}
+								}
+
+								//IF EMPTY, MOVE TO FLOOR REQUESTED BY BUTTON PRESS
+							} else {
+
 								m.setDoorOpen(false);
-								button.postUpdate(button.buttonUnpressedState);
-								TextView.print("Button\t\tFloor: " + button.getButtonFloor() + "\t|\tState: " + button.getState().toString());
-
 								TextView.print("Lift\t\tMOVING\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tLift in Transit");
-
-
 								try {
-									
+
 									int travelTime = 5; //Seconds
-									
+
 									for (int progress = 0; progress < travelTime; progress = progress + 1) {
 										animateMovement(progress, travelTime, m);
 										Thread.sleep(1000);
 									}
-									
+
 								} catch (InterruptedException e) {
 
 									TextView.printError("Passenger Entry Thread Interupted", e.getMessage());
 
 								} finally {
-									
-									m.setCurrentFloor(m.passengers().get(0).getEndFloor());
+
+									m.setCurrentFloor(button.getButtonFloor());
 									m.setDoorOpen(true);
-									TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Arrived");
 									m.postUpdate(m.liftEndState);
-									
+
 								}
 							}
 
 						}
 					}
 				}
+
+				///	END | Lift MOVING State View Update
 
 			} else if (cls == null ) {	
 
@@ -103,20 +139,4 @@ public class LiftMoving implements State {
 		}
 		TextView.printnlnt("]\n");
 	}
-
-	//Start Phase
-	// If required, change to Floor of Button Press --> Moving Phase
-	// Open Doors
-	// Allow Passenger Entry (1 Second p/p)
-
-	//Moving Phase
-	// Close Doors
-	// Change Floor to required Floor
-	// Wait 5 Seconds
-
-	//End Phase
-	// Open Doors
-	// Allow Passenger Exit (1 Second p/p)
-	// Close Doors
-
 }

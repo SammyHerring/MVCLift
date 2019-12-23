@@ -50,17 +50,30 @@ public class LiftStart implements State {
 
 						if ((button.getState() == button.buttonPressedState) &&
 								(m.getCurrentFloor() == button.getButtonFloor())) {
-							
+
 							//Open Doors
 							m.setDoorOpen(true);
-							
+
 							//Notification of Arrival
 							//IF NO PASSENGERS HAVE ENTERED AND ARE WAITING
 							if (m.passengers().isEmpty() && !(m.persons().isEmpty())) {
 								TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Arrived");
 							}
 							
-							//Passengers Enter - 1 second p/p
+							//Passengers Entry
+							for (Person p : m.persons()) {
+								if (m.getCurrentFloor() == p.getStartFloor() && 
+										m.getDoorOpen() && 
+										!m.checkPassenger(p.getID()) && 
+										m.checkPerson(p.getID()) &&
+										m.passengerWeightNotExceeded(p.getWeight()) ) {
+
+									m.passengers().add(p);
+									m.persons().remove(p);
+								}
+							}
+
+							//Once Passengers Enter - 1 second p/p
 							for (Person passenger: m.passengers()) {
 
 								try {
@@ -84,7 +97,7 @@ public class LiftStart implements State {
 								for (Person person : peopleOnFloor) {
 
 									if (!m.passengerWeightNotExceeded(person.getWeight())) {
-										TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Full");
+										TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Full at " + m.currentWeight() + " KG");
 										m.postUpdate(m.liftMovingState);
 										break;
 									}
@@ -98,6 +111,8 @@ public class LiftStart implements State {
 								}
 							}
 
+						} else if (button.getState() == button.buttonPressedState && m.getCurrentFloor() != button.getButtonFloor()) {
+							m.postUpdate(m.liftMovingState);
 						}
 					}
 				}

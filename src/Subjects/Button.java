@@ -32,6 +32,14 @@ public class Button implements Subject, State {
     
     public Integer getButtonFloor() { return this.buttonFloor; }
     
+    public boolean pushButtonSuccess() {
+    	if (buttonState != buttonPressedState) {
+        	this.postUpdate(this.buttonPressedState);
+        	return true;
+    	}
+    	return false;
+    }
+    
     /// END		|	ACCESSOR & MUTATOR METHODS
 	
     ///	START	|	SUBJECT DESIGN PATTERN
@@ -74,7 +82,9 @@ public class Button implements Subject, State {
 
 	@Override
 	public State getUpdate(Observer obj) {
-		return this.buttonState;
+		synchronized (MUTEX) {
+			return this.buttonState;
+		}
 	}
 	
 	@Override

@@ -2,8 +2,6 @@ package States;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import CustomDataTypes.Generic;
 import LiftComponents.LiftModel;
 import Subjects.Button;
@@ -19,7 +17,7 @@ public class LiftEnd implements State {
 	}
 
 	@Override
-	public synchronized void doAction(boolean running, Object obj) {
+	public void doAction(boolean running, Object obj) {
 
 		if ( !(obj instanceof ArrayList) ) {	
 
@@ -38,17 +36,12 @@ public class LiftEnd implements State {
 
 			if ( cls == Button.class ) {	
 
-				@SuppressWarnings("unchecked") //Check performed using reflection, evaluation occurs at runtime	
-				List<Button> b = (List<Button>) obj;	
+				///	START | Lift END State View Update
 
 				if (!running) {
 					TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor());
 				} else {
 					m.setDoorOpen(true);
-
-					if (m.passengers().isEmpty()) {
-						TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Arrived");
-					}
 
 					//People Enter - sleep thread for 1 second
 					for (Person passenger: m.passengers()) {
@@ -69,17 +62,23 @@ public class LiftEnd implements State {
 					}
 
 					if (m.persons().isEmpty()) {
+
 						m.setDoorOpen(false);
 						TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tLift Journey End");
 						m.postUpdate(m.liftEndScenarioState);
+
 					} else {
-						TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tAwaiting Passengers");
+
+						synchronized(m) {
+							TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tAwaiting Passengers");
+						}
 						m.postUpdate(m.liftStartState);
+
 					}
-
-
-
 				}
+
+				///	END | Lift END State View Update
+
 
 			} else if (cls == null ) {	
 
@@ -93,20 +92,5 @@ public class LiftEnd implements State {
 
 		}
 	}
-
-	//Start Phase
-	// If required, change to Floor of Button Press --> Moving Phase
-	// Open Doors
-	// Allow Passenger Entry (1 Second p/p)
-
-	//Moving Phase
-	// Close Doors
-	// Change Floor to required Floor
-	// Wait 5 Seconds
-
-	//End Phase
-	// Open Doors
-	// Allow Passenger Exit (1 Second p/p)
-	// Close Doors
 
 }

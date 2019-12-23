@@ -1,6 +1,5 @@
 package LiftComponents;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -74,7 +73,7 @@ public final class LiftModel implements Subject, State {
 		}
 	}
 	
-	private Integer currentWeight() {
+	public Integer currentWeight() {
 		Integer w = 0;
 		synchronized (passengers) {
 			for (Person person : passengers) {

@@ -33,7 +33,8 @@ public class Quartet<X, Y, Z, W> {
             return false;
         }
         
-        Quartet<X, Y, Z, W> comparator_ = (Quartet<X, Y, Z, W>) comparator;
+        @SuppressWarnings("unchecked")
+		Quartet<X, Y, Z, W> comparator_ = (Quartet<X, Y, Z, W>) comparator;
 
         if (comparator_.x == null || comparator_.y == null || this.x == null || this.y == null ||
         	comparator_.z == null || comparator_.w == null || this.z == null || this.w == null) {
