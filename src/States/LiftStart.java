@@ -44,7 +44,7 @@ public class LiftStart implements State {
 				///	START | Lift START State View Update
 
 				if (!running) {
-					TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor());
+					TextView.print("Lift\tSTART\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor());
 				} else {
 					for (Button button : b) {
 
@@ -57,7 +57,7 @@ public class LiftStart implements State {
 							//Notification of Arrival
 							//IF NO PASSENGERS HAVE ENTERED AND ARE WAITING
 							if (m.passengers().isEmpty() && !(m.persons().isEmpty())) {
-								TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Arrived");
+								TextView.print("Lift\tSTART\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tLift Arrived");
 							}
 							
 							//Passengers Entry
@@ -97,7 +97,7 @@ public class LiftStart implements State {
 								for (Person person : peopleOnFloor) {
 
 									if (!m.passengerWeightNotExceeded(person.getWeight())) {
-										TextView.print("Lift\t\tSTART\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Full at " + m.currentWeight() + " KG");
+										TextView.print("Lift\tSTART\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tLift Full at " + m.currentWeight() + " KG");
 										m.postUpdate(m.liftMovingState);
 										break;
 									}

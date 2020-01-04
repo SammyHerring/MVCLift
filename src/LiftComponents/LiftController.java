@@ -9,6 +9,7 @@ import CustomDataTypes.Scenario;
 import CustomDataTypes.ScenarioFloor;
 import CustomDataTypes.ScenarioFloorComparator;
 import Subjects.*;
+import Views.ControllerView;
 import Views.TextView;
 
 public class LiftController {
@@ -42,7 +43,7 @@ public class LiftController {
 		Scenario s4 = new Scenario(s4floors, m.liftInitState);
 		
 		//Scenario in use
-		Scenario s = s4;
+		Scenario s = s3;
 		
 		// Subjects --> Lift Model, Buttons, People
 		// Observers --> Lift View
@@ -120,6 +121,10 @@ public class LiftController {
 			v.begin();
 			
 			executor = newWorkStealingPool();
+			
+			Future<?> controllerViewGUI = executor.submit(() -> { 
+				//Update Controller GUI
+			});
 			
 			List<Future<?>> subjectTasks = new ArrayList<>();
 			

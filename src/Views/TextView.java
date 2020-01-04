@@ -8,6 +8,7 @@ public class TextView {
 	//Overloading Methods for Print to support optional arguments
 	public static void print(String text) {
 		System.out.println(getCurrentTimeStamp()+"\t\t"+text);
+		
 	}
 	
 	public static void print(Integer text) {
@@ -34,6 +35,11 @@ public class TextView {
 	//Print with no new line (nl) and no timestamp (nt)
 	public static void printnlnt(String text) {
 		System.out.print(text);
+	}
+	
+	//Overloading Methods for Error Printing
+	public static void printError(String text) {
+		print("[ERROR]\t" + text);
 	}
 	
 	//Standardised Error report print method

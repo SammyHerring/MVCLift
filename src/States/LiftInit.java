@@ -42,7 +42,7 @@ public class LiftInit implements State {
 				List<Button> b = (List<Button>) obj;	
 
 				if (!running) {
-					TextView.print("Lift\t\tINIT\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor()); 
+					TextView.print("Lift\tINIT\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor()); 
 					m.setCurrentFloor(m.minFloor());
 					m.setDoorOpen(false);
 				} else {

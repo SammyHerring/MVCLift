@@ -41,7 +41,7 @@ public class LiftMoving implements State {
 				///	START | Lift MOVING State View Update
 
 				if (!running) {
-					TextView.print("Lift\t\tMOVING\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor());
+					TextView.print("Lift\tMOVING\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor());
 				} else {
 
 					for (Button button : b) {
@@ -54,7 +54,7 @@ public class LiftMoving implements State {
 								if (m.passengers().get(0).getStartFloor() == button.getButtonFloor()) {
 
 									m.setDoorOpen(false);
-									TextView.print("Lift\t\tMOVING\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tLift in Transit");
+									TextView.print("Lift\tMOVING\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tLift in Transit");
 
 									//ACTUAL LIFT MOVEMENT
 									//WAIT FOR MOVEMENT TIME BEFORE UPDATING LIFT MODEL
@@ -76,7 +76,7 @@ public class LiftMoving implements State {
 										button.postUpdate(button.buttonUnpressedState);
 										m.setCurrentFloor(m.passengers().get(0).getEndFloor()); //Prioritise lift movement to first passenger to enter lift
 										m.setDoorOpen(true);
-										TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Arrived");
+										TextView.print("Lift\tEND\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Arrived");
 										m.postUpdate(m.liftEndState);
 
 									}
@@ -86,7 +86,7 @@ public class LiftMoving implements State {
 							} else {
 
 								m.setDoorOpen(false);
-								TextView.print("Lift\t\tMOVING\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tLift in Transit");
+								TextView.print("Lift\tMOVING\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tLift in Transit");
 								try {
 
 									int travelTime = 5; //Seconds
@@ -129,7 +129,7 @@ public class LiftMoving implements State {
 	}
 
 	private static void animateMovement(int progressPercentage, int travelTime, LiftModel m) {
-		TextView.printnl("Lift\t\tMOVING\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\t[");
+		TextView.printnl("Lift\tMOVING\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\t[");
 		int i = 0;
 		for (; i <= progressPercentage; i++) {
 			TextView.printnlnt(".");

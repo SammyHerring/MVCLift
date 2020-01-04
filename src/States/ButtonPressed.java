@@ -15,7 +15,7 @@ public class ButtonPressed implements State, ButtonState {
 
 	public void doAction(boolean running, Object obj) {
 		
-		if (!running) { TextView.print("Button\t\tFloor: " + b.getButtonFloor() + "\t|\tState: Pressed"); }
+		if (!running) { TextView.print("Button\tFloor: " + b.getButtonFloor() + "\t|\tState: Pressed"); }
 			
 	}
 }

@@ -39,7 +39,7 @@ public class LiftEnd implements State {
 				///	START | Lift END State View Update
 
 				if (!running) {
-					TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor());
+					TextView.print("Lift\tEND\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor());
 				} else {
 					m.setDoorOpen(true);
 
@@ -64,13 +64,13 @@ public class LiftEnd implements State {
 					if (m.persons().isEmpty()) {
 
 						m.setDoorOpen(false);
-						TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tLift Journey End");
+						TextView.print("Lift\tEND\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tLift Journey End");
 						m.postUpdate(m.liftEndScenarioState);
 
 					} else {
 
 						synchronized(m) {
-							TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tAwaiting Passengers");
+							TextView.print("Lift\tEND\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tAwaiting Passengers");
 						}
 						m.postUpdate(m.liftStartState);
 
