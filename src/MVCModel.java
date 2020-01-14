@@ -12,7 +12,7 @@ public class MVCModel {
 	
 	public static void main(String[] args) {
 		
-		ControllerView c = new ControllerView();
+		ControllerView c = new ControllerView(); //GUI to Show Program Console
 		
 		TextView.print("---\tLift Simulator Program\t---");
 		TextView.print("---\tSimulator Initialising\t---\n", true);
@@ -25,7 +25,7 @@ public class MVCModel {
 		
 		//Generate buttons for the number of existing floors
 		for (int floor = 0; floor < m.floorCount(); floor=floor+1) {
-			TextView.print("Button Initialised \t\t|\t\tFloor: " + floor);
+			TextView.print("Button Initialised \t|\tFloor: " + floor);
 			b.add(new Button(floor));
 		}
 		
@@ -36,7 +36,7 @@ public class MVCModel {
 		//Start simulation from Lift Controller
 		TextView.print("--\tSimulation Starting\t---", true);
 		
-		new LiftController(v, m, b);
+		new LiftController(v, m, b, c);
 		
 	}
 }

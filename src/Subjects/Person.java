@@ -25,8 +25,6 @@ public class Person implements Subject {
 	
 	private State personState;
 	public final State personStartFloorState;
-	public final State personMovingFloorState;
-	public final State personEndFloorState;
 	
 	public Person(Integer startFloor, Integer endFloor, LiftModel m) {
 		
@@ -38,8 +36,6 @@ public class Person implements Subject {
 		this.m = m;
 		
 		this.personStartFloorState = new PersonStartFloor(this);
-		this.personMovingFloorState = new PersonMovingFloor(this);
-		this.personEndFloorState = new PersonEndFloor(this);
 		
 		this.observers = new ArrayList<>();
 		

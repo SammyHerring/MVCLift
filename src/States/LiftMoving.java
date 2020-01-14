@@ -5,6 +5,7 @@ import java.util.List;
 import CustomDataTypes.Generic;
 import LiftComponents.LiftModel;
 import Subjects.Button;
+import Views.ControllerView;
 import Views.TextView;
 
 public class LiftMoving implements State {
@@ -41,8 +42,12 @@ public class LiftMoving implements State {
 				///	START | Lift MOVING State View Update
 
 				if (!running) {
+					ControllerView.startStopButton(false);
+					
 					TextView.print("Lift\tMOVING\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor());
 				} else {
+					
+					ControllerView.startStopButton(true);
 
 					for (Button button : b) {
 						if (button.getState() == button.buttonPressedState) {
@@ -76,7 +81,7 @@ public class LiftMoving implements State {
 										button.postUpdate(button.buttonUnpressedState);
 										m.setCurrentFloor(m.passengers().get(0).getEndFloor()); //Prioritise lift movement to first passenger to enter lift
 										m.setDoorOpen(true);
-										TextView.print("Lift\tEND\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor() + "\tLift Arrived");
+										TextView.print("Lift\tEND\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tLift Arrived");
 										m.postUpdate(m.liftEndState);
 
 									}

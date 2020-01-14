@@ -8,6 +8,7 @@ import CustomDataTypes.Generic;
 import LiftComponents.LiftModel;
 import Subjects.Button;
 import Subjects.Person;
+import Views.ControllerView;
 import Views.TextView;
 
 public class LiftEndScenario implements State {
@@ -39,11 +40,14 @@ public class LiftEndScenario implements State {
 			if ( cls == Button.class ) {	
 
 				@SuppressWarnings("unchecked") //Check performed using reflection, evaluation occurs at runtime	
-				List<Button> b = (List<Button>) obj;	
+				List<Button> b = (List<Button>) obj;
+				
+				ControllerView.startStopButton(false);
 
 				if (!running) {
 					TextView.print("Lift\t\tEND\t\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor());
 				} else {
+					
 					for (Button button : b) {
 						if (button.getState() == button.buttonPressedState) {
 							if (m.getCurrentFloor() == button.getButtonFloor()) {

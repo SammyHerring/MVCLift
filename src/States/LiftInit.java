@@ -6,6 +6,7 @@ import java.util.List;
 import CustomDataTypes.Generic;
 import LiftComponents.LiftModel;
 import Subjects.Button;
+import Views.ControllerView;
 import Views.TextView;
 
 public class LiftInit implements State {
@@ -42,10 +43,13 @@ public class LiftInit implements State {
 				List<Button> b = (List<Button>) obj;	
 
 				if (!running) {
+					ControllerView.startStopButton(false);
 					TextView.print("Lift\tINIT\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor()); 
 					m.setCurrentFloor(m.minFloor());
 					m.setDoorOpen(false);
 				} else {
+					ControllerView.startStopButton(true);
+					
 					for (Button button : b) {
 						if (button.getState() == button.buttonPressedState) {
 							m.postUpdate(m.liftStartState);

@@ -39,7 +39,7 @@ public class PersonStartFloor implements State, PersonState{
 
 			if ( cls == Button.class ) {	
 
-				//	START | Successful Button State Activation Process
+				//	START | Successful Button Press by Passenger
 
 
 				@SuppressWarnings("unchecked") //Check performed using reflection, evaluation occurs at runtime	
@@ -48,14 +48,15 @@ public class PersonStartFloor implements State, PersonState{
 				Button b_instance = b.get(p.getStartFloor());
 
 				if (!running) {
-					TextView.print("Passenger " + (p.getID()+1) + "\t"+ getPersonAction() + " \t|\tStart: " + p.getStartFloor() + "\t\tEnd: " + p.getEndFloor() + "\t\tWeight: " + p.getWeight());
+					TextView.print("Passenger " + (p.getID()+1) + "\t"+ getPersonAction() + " \t|\tStart: " + p.getStartFloor() + "\t\tEnd: " + p.getEndFloor() + "\tWeight: " + p.getWeight());
 				} else if (b_instance.getState() == b_instance.buttonUnpressedState) {
 					if (b_instance.pushButtonSuccess()) {
-						TextView.print("Passenger " + (p.getID()+1) + "\tFloor: " + p.getStartFloor() + "\t|\tPushing Button " + b_instance.getButtonFloor());
+						this.setPersonAction(personAction.CALLING); //Person Action State used for Passenger State Distinction for GUI
+						TextView.print("Passenger " + (p.getID()+1) + "\t" + this.getPersonAction() +"\t|\tFloor: " + p.getStartFloor() + "\t\tPushing Button " + b_instance.getButtonFloor());
 					}
 				}
 
-				//	END | Successful Button State Activation Process
+				//	END | Successful Button Press by Passenger
 
 			} else if (cls == null ) {	
 

@@ -8,6 +8,7 @@ import CustomDataTypes.Generic;
 import LiftComponents.LiftModel;
 import Subjects.Button;
 import Subjects.Person;
+import Views.ControllerView;
 import Views.TextView;
 
 public class LiftStart implements State {
@@ -44,8 +45,13 @@ public class LiftStart implements State {
 				///	START | Lift START State View Update
 
 				if (!running) {
+					ControllerView.startStopButton(false);
+					
 					TextView.print("Lift\tSTART\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor());
 				} else {
+					
+					ControllerView.startStopButton(true);
+					
 					for (Button button : b) {
 
 						if ((button.getState() == button.buttonPressedState) &&
@@ -78,7 +84,7 @@ public class LiftStart implements State {
 
 								try {
 									if (!m.checkPerson(passenger.getID())) {
-										TextView.print("Passenger " + (passenger.getID()+1) + "\tFloor: " + passenger.getStartFloor() + "\t|\tEntering Lift");
+										TextView.print("Passenger " + (passenger.getID()+1) + "\tENTERING\t|\tFloor: " + passenger.getStartFloor() + "\t\tEntering Lift");
 									}
 									Thread.sleep(1000);
 
