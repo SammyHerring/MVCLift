@@ -5,7 +5,6 @@ import java.util.List;
 import CustomDataTypes.Generic;
 import LiftComponents.LiftModel;
 import Subjects.Button;
-import Views.ControllerView;
 import Views.TextView;
 
 public class LiftMoving implements State {
@@ -42,13 +41,8 @@ public class LiftMoving implements State {
 				///	START | Lift MOVING State View Update
 
 				if (!running) {
-					ControllerView.startStopButton(false);
-					
 					TextView.print("Lift\tMOVING\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\t\tFloor: " + m.getCurrentFloor());
 				} else {
-					
-					ControllerView.startStopButton(true);
-
 					for (Button button : b) {
 						if (button.getState() == button.buttonPressedState) {
 
@@ -68,8 +62,8 @@ public class LiftMoving implements State {
 										int travelTime = 5; //Seconds
 
 										for (int progress = 0; progress < travelTime; progress = progress + 1) {
-											animateMovement(progress, travelTime, m);
-											Thread.sleep(1000);
+												animateMovement(progress, travelTime, m);
+												Thread.sleep(1000);
 										}
 
 									} catch (InterruptedException e) {
@@ -97,8 +91,10 @@ public class LiftMoving implements State {
 									int travelTime = 5; //Seconds
 
 									for (int progress = 0; progress < travelTime; progress = progress + 1) {
-										animateMovement(progress, travelTime, m);
-										Thread.sleep(1000);
+										if (running) {
+											animateMovement(progress, travelTime, m);
+											Thread.sleep(1000);
+										}
 									}
 
 								} catch (InterruptedException e) {

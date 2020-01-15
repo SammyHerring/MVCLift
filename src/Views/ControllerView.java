@@ -22,9 +22,9 @@ public class ControllerView extends Frame implements Observer {
 	private Subject subject;
 	private JFrame frame = new JFrame("Lift Simulation Controller");
 
-	private static boolean startState = false;
-	private enum scenario { S1, S2, S3, ENABLE, DISABLE }
-	private static scenario activeScenario = scenario.S1;
+	private boolean running = false;
+	public enum scenario { S1, S2, S3, ENABLE, DISABLE }
+	public scenario activeScenario = scenario.S1; //Default scenario selection
 
 	private static ImageIcon startDefault;
 	private static ImageIcon startPressed;
@@ -40,31 +40,32 @@ public class ControllerView extends Frame implements Observer {
 	private static JTextArea textView = new JTextArea(50, 120);
 	private static MessageConsole mc = new MessageConsole(textView);
 
-	private Map<String, ImageIcon> imageAssets;
+	public static Map<String, ImageIcon> imageAssets = new HashMap<String, ImageIcon>();;
 
 	public ControllerView() {
-		
-		try {			
+
+		try {
+			//Button Image Icons in Image Assets Hash Map			
 			//Make Start Stop Graphics Static and Globally Accessible to Class
-			startDefault = new ImageIcon(ImageIO.read(getClass()
+			imageAssets.put("startDefault", new ImageIcon(ImageIO.read(getClass()
 					.getClassLoader()
-					.getResource("ImgAssets/MVCLift_ImgAsset_STARTDefault.png")));
+					.getResource("ImgAssets/MVCLift_ImgAsset_STARTDefault.png"))));
 
-			startPressed = new ImageIcon(ImageIO.read(getClass()
+			imageAssets.put("startPressed", new ImageIcon(ImageIO.read(getClass()
 					.getClassLoader()
-					.getResource("ImgAssets/MVCLift_ImgAsset_STARTPressed.png")));
+					.getResource("ImgAssets/MVCLift_ImgAsset_STARTPressed.png"))));
 
-			stopDefault = new ImageIcon(ImageIO.read(getClass()
+			imageAssets.put("stopDefault", new ImageIcon(ImageIO.read(getClass()
 					.getClassLoader()
-					.getResource("ImgAssets/MVCLift_ImgAsset_STOPDefault.png")));
+					.getResource("ImgAssets/MVCLift_ImgAsset_STOPDefault.png"))));
 
-			stopPressed = new ImageIcon(ImageIO.read(getClass()
+			imageAssets.put("stopPressed", new ImageIcon(ImageIO.read(getClass()
 					.getClassLoader()
-					.getResource("ImgAssets/MVCLift_ImgAsset_STOPPressed.png")));
-			
-			//Scenario Buttons in Image Assets Hash Map
-			imageAssets = new HashMap<String, ImageIcon>();
-			
+					.getResource("ImgAssets/MVCLift_ImgAsset_STOPPressed.png"))));
+
+			startstop.setIcon(imageAssets.get("startDefault"));
+			startstop.setPressedIcon(imageAssets.get("startPressed"));
+
 			//Scenario 1 Button
 			imageAssets.put("s1Default", new ImageIcon(ImageIO.read(getClass()
 					.getClassLoader()
@@ -74,6 +75,9 @@ public class ControllerView extends Frame implements Observer {
 			imageAssets.put("s1Pressed", new ImageIcon(ImageIO.read(getClass()
 					.getClassLoader()
 					.getResource("ImgAssets/MVCLift_ImgAsset_S1Pressed.png"))));
+
+			s1.setIcon(imageAssets.get("s1Default"));
+			s1.setPressedIcon(imageAssets.get("s1Pressed"));
 
 			//Scenario 2 Button
 			imageAssets.put("s2Default", new ImageIcon(ImageIO.read(getClass()
@@ -85,6 +89,9 @@ public class ControllerView extends Frame implements Observer {
 					.getClassLoader()
 					.getResource("ImgAssets/MVCLift_ImgAsset_S2Pressed.png"))));
 
+			s2.setIcon(imageAssets.get("s2Default"));
+			s2.setPressedIcon(imageAssets.get("s2Pressed"));
+
 			//Scenario 3 Button
 			imageAssets.put("s3Default", new ImageIcon(ImageIO.read(getClass()
 					.getClassLoader()
@@ -95,12 +102,15 @@ public class ControllerView extends Frame implements Observer {
 					.getClassLoader()
 					.getResource("ImgAssets/MVCLift_ImgAsset_S3Pressed.png"))));
 
+			s3.setIcon(imageAssets.get("s3Default"));
+			s3.setPressedIcon(imageAssets.get("s3Pressed"));
+
 		} catch (Exception ex) {
 
 			TextView.printError("Icon Loader Error", ex.toString());
 		}
 
-		initComponents(imageAssets);
+		initComponents();
 
 		//Creating the Frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -109,7 +119,7 @@ public class ControllerView extends Frame implements Observer {
 		frame.setVisible(true);
 	}
 
-	public void initComponents(Map<String, ImageIcon> imageAssets) {		
+	public void initComponents() {		
 		JPanel buttonPanel = new JPanel();
 		JPanel viewPanel = new JPanel();
 
@@ -119,9 +129,8 @@ public class ControllerView extends Frame implements Observer {
 		s1.setSize(100, 40);
 		s2.setSize(100, 40);
 		s3.setSize(100, 40);
-		
-		activeScenario = scenario.S1;
-		scenarioButtonManager(imageAssets, activeScenario);
+
+		scenarioButtonManager(activeScenario);
 
 		//Construct Vertical Button Control Panel Layout
 		buttonBox.add(startstop);
@@ -136,7 +145,7 @@ public class ControllerView extends Frame implements Observer {
 
 		//Redirect Console Output to Message Console Text View Component in View Panel
 		mc.redirectOut(Color.BLACK, null);
-		mc.redirectErr(Color.RED, null);
+		mc.redirectErr(Color.BLACK, null);
 		mc.setMessageLines(1000);
 
 		//Adding Components to the frame
@@ -150,7 +159,12 @@ public class ControllerView extends Frame implements Observer {
 			public void actionPerformed(ActionEvent e)
 			{
 				//START OR STOP SCENARIO
-				TextView.print("Start Stop Requested");
+				if (running) {
+					TextView.printManager("Requesting Executor Service Stop");
+				} else {
+					TextView.printManager("Requesting Executor Service Start");
+				}
+				switchRunState();
 			}
 		});
 
@@ -160,9 +174,12 @@ public class ControllerView extends Frame implements Observer {
 			public void actionPerformed(ActionEvent e)
 			{
 				//SELECT SCENARIO 1
-				TextView.print("Scenario 1 Requested");
-				activeScenario = scenario.S1;
-				scenarioButtonManager(imageAssets, activeScenario);
+				if (activeScenario != scenario.S1) {
+					textView.setText("");
+					TextView.printManager("Scenario 1 Requested");
+					activeScenario = scenario.S1;
+					scenarioButtonManager(scenario.S1);
+				}
 			}
 		});
 
@@ -172,9 +189,12 @@ public class ControllerView extends Frame implements Observer {
 			public void actionPerformed(ActionEvent e)
 			{
 				//SELECT SCENARIO 2
-				TextView.print("Scenario 2 Requested");
-				activeScenario = scenario.S2;
-				scenarioButtonManager(imageAssets, activeScenario);
+				if (activeScenario != scenario.S2) {
+					textView.setText("");
+					TextView.printManager("Scenario 2 Requested");
+					activeScenario = scenario.S2;
+					scenarioButtonManager(scenario.S2);
+				}
 			}
 		});
 
@@ -184,94 +204,80 @@ public class ControllerView extends Frame implements Observer {
 			public void actionPerformed(ActionEvent e)
 			{
 				//SELECT SCENARIO 3
-				TextView.print("Scenario 3 Requested");
-				activeScenario = scenario.S3;
-				scenarioButtonManager(imageAssets, activeScenario);
+				if (activeScenario != scenario.S3) {
+					textView.setText("");
+					TextView.printManager("Scenario 3 Requested");
+					activeScenario = scenario.S3;
+					scenarioButtonManager(scenario.S3);
+				}
 			}
 		});
+	}	
 
-	}
+	public void startStopButton() {
+		if (running) {
+			startstop.setIcon(imageAssets.get("stopDefault"));
+			startstop.setPressedIcon(imageAssets.get("stopPressed"));
 
-	public static void startStopButton(boolean start) {
-		if (start) {
-			try {
-				startstop.setIcon(stopDefault);
-				startstop.setPressedIcon(stopPressed);
-			} catch (Exception ex) {
-
-			}
 			scenarioButtonManager(scenario.DISABLE);
 		} else {
-			startstop.setIcon(startDefault);
-			startstop.setPressedIcon(startPressed);
+			startstop.setIcon(imageAssets.get("startDefault"));
+			startstop.setPressedIcon(imageAssets.get("startPressed"));
 
 			scenarioButtonManager(scenario.ENABLE);
 			scenarioButtonManager(activeScenario);
 		}
-		startState = start;
 	}
 
-	public static void scenarioButtonManager(Map<String, ImageIcon> imageAssets, scenario s) {
-		activeScenario = s;
-		if (activeScenario == scenario.S1) {
+	public static void scenarioButtonManager(scenario s) {
+		if (s == scenario.S1) {
 			s1.setIcon(imageAssets.get("s1Pressed"));
 			s2.setIcon(imageAssets.get("s2Default"));
 			s3.setIcon(imageAssets.get("s3Default"));
-		} else if (activeScenario == scenario.S2) {
+		} else if (s == scenario.S2) {
 			s1.setIcon(imageAssets.get("s1Default"));
 			s2.setIcon(imageAssets.get("s2Pressed"));
 			s3.setIcon(imageAssets.get("s3Default"));
-		} else if (activeScenario == scenario.S3) {			
+		} else if (s == scenario.S3) {
 			s1.setIcon(imageAssets.get("s1Default"));
 			s2.setIcon(imageAssets.get("s2Default"));
 			s3.setIcon(imageAssets.get("s3Pressed"));
-		} else if (activeScenario == scenario.ENABLE) {
+		} else if (s == scenario.ENABLE) {
 			s1.setEnabled(true);
 			s2.setEnabled(true);
 			s3.setEnabled(true);
-		} else if (activeScenario == scenario.DISABLE) {
+		} else if (s == scenario.DISABLE) {
 			s1.setEnabled(false);
 			s2.setEnabled(false);
 			s3.setEnabled(false);
 		} else {
 			TextView.printError("Button Manager", "Invalid Active Scenario Detected.");
 		}
-		s1.setPressedIcon(imageAssets.get("s1Pressed"));
-		s2.setPressedIcon(imageAssets.get("s2Pressed"));
-		s3.setPressedIcon(imageAssets.get("s3Pressed"));
 	}
 
-	public static void scenarioButtonManager(scenario s) {
-		activeScenario = s;
-		if (activeScenario == scenario.ENABLE) {
-			s1.setEnabled(true);
-			s2.setEnabled(true);
-			s3.setEnabled(true);
-		} else if (activeScenario == scenario.DISABLE) {
-			s1.setEnabled(false);
-			s2.setEnabled(false);
-			s3.setEnabled(false);
-		} else {
-			TextView.printError("Button Manager",
-					"Invalid Active Scenario Detected. Image Assets missing from scenario call. Try \"scenarioButtonManager(imageAssets, scenario)\".");
-		}
-	}
+	public scenario getScenario() { return activeScenario; }
+
+	public void setRunState(boolean r) { running = r; }
+	public boolean getRunState() { return running; }
+	public void switchRunState() { running = !running; }
 
 	@Override
 	public void update() {
 
-		Object update = subject.getUpdate(this);
+		//		Object update = subject.getUpdate(this);
+		//
+		//		if (update instanceof State ) {
+		//
+		//			//((State) update).doAction(this.running, b);			
+		//			startStopButton();
+		//			TextView.print("Updating C");
+		//
+		//		} else {
+		//
+		//			TextView.printError("Object State", "Update object pushed, not of State object type.");
+		//		}
 
-		if (update instanceof State ) {
-
-			//((State) update).doAction(this.running, b);
-			TextView.printError("Controller", "State");
-
-		} else {
-
-			TextView.printError("Object State", "Update object pushed, not of State object type.");
-		}
-
+		startStopButton();
 	}
 
 	@Override

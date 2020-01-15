@@ -6,7 +6,6 @@ import java.util.List;
 import CustomDataTypes.Generic;
 import LiftComponents.LiftModel;
 import Subjects.Button;
-import Views.ControllerView;
 import Views.TextView;
 
 public class LiftInit implements State {
@@ -37,19 +36,17 @@ public class LiftInit implements State {
 
 			if ( cls == Button.class ) {	
 
-				///	START | Lift INIT State View Update
-
 				@SuppressWarnings("unchecked") //Check performed using reflection, evaluation occurs at runtime	
-				List<Button> b = (List<Button>) obj;	
+				List<Button> b = (List<Button>) obj;
+				
+				///	START | Lift INIT State View Update
+				
+				m.setCurrentFloor(m.minFloor());
+				m.setDoorOpen(false);
 
 				if (!running) {
-					ControllerView.startStopButton(false);
 					TextView.print("Lift\tINIT\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor()); 
-					m.setCurrentFloor(m.minFloor());
-					m.setDoorOpen(false);
 				} else {
-					ControllerView.startStopButton(true);
-					
 					for (Button button : b) {
 						if (button.getState() == button.buttonPressedState) {
 							m.postUpdate(m.liftStartState);

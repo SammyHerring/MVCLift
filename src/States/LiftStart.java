@@ -8,7 +8,6 @@ import CustomDataTypes.Generic;
 import LiftComponents.LiftModel;
 import Subjects.Button;
 import Subjects.Person;
-import Views.ControllerView;
 import Views.TextView;
 
 public class LiftStart implements State {
@@ -43,15 +42,9 @@ public class LiftStart implements State {
 				List<Button> b = (List<Button>) obj;
 
 				///	START | Lift START State View Update
-
 				if (!running) {
-					ControllerView.startStopButton(false);
-					
 					TextView.print("Lift\tSTART\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor());
 				} else {
-					
-					ControllerView.startStopButton(true);
-					
 					for (Button button : b) {
 
 						if ((button.getState() == button.buttonPressedState) &&

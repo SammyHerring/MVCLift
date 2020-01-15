@@ -47,6 +47,10 @@ public class TextView {
 		print("[" + title.toUpperCase() + " ERROR]\t" + text);
 	}
 	
+	public static void printManager(String text) {
+		print("[EXECUTOR MANAGER]\t" + text);
+	}
+	
 	//Return string with current time stamp in required format
 	private static String getCurrentTimeStamp() {
 	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");

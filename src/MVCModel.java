@@ -36,7 +36,12 @@ public class MVCModel {
 		//Start simulation from Lift Controller
 		TextView.print("--\tSimulation Starting\t---", true);
 		
-		new LiftController(v, m, b, c);
+		try {
+			new LiftController(v, m, b, c);
+		} catch (Exception ex) {
+			TextView.printError("Lift Controller", "Interupt Related Error");
+		}
+		
 		
 	}
 }
