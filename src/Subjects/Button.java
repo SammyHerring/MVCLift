@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import States.*;
+import Views.ControllerView;
 
 public class Button implements Subject, State {
+	
+	private ControllerView c;
 	
 	private int buttonFloor;
 	
@@ -17,7 +20,10 @@ public class Button implements Subject, State {
 	public final State buttonUnpressedState;
 	public final State buttonPressedState;
 	
-	public Button(Integer buttonFloor) {    	
+	public Button(Integer buttonFloor) {
+		
+		this.c = c;
+		
 		this.buttonFloor = buttonFloor;
 		
 		this.buttonUnpressedState = new ButtonUnpressed(this);

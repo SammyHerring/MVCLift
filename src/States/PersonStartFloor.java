@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import Subjects.Button;
 import Subjects.Person;
+import Views.ControllerView;
 import Views.TextView;
 
 public class PersonStartFloor implements State, PersonState{
@@ -11,10 +12,13 @@ public class PersonStartFloor implements State, PersonState{
 	private final Person p;
 
 	private PersonAction personAction;
+	
+	private ControllerView c;
 
-	public PersonStartFloor(Person p) {
+	public PersonStartFloor(Person p, ControllerView c) {
 
 		this.p = p;
+		this.c = c;
 
 		this.personAction = PersonAction.WAITING;
 	}
@@ -53,6 +57,7 @@ public class PersonStartFloor implements State, PersonState{
 					if (b_instance.pushButtonSuccess()) {
 						this.setPersonAction(personAction.CALLING); //Person Action State used for Passenger State Distinction for GUI
 						TextView.print("Passenger " + (p.getID()+1) + "\t" + this.getPersonAction() +"\t|\tFloor: " + p.getStartFloor() + "\t\tPushing Button " + b_instance.getButtonFloor());
+						ControllerView.animationViews.get(p.getStartFloor()).switchActiveFrames(true);
 					}
 				}
 

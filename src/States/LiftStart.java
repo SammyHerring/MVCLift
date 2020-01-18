@@ -8,14 +8,17 @@ import CustomDataTypes.Generic;
 import LiftComponents.LiftModel;
 import Subjects.Button;
 import Subjects.Person;
+import Views.ControllerView;
 import Views.TextView;
 
 public class LiftStart implements State {
 
 	private LiftModel m;
+	private ControllerView c;
 
-	public LiftStart(LiftModel m) {
+	public LiftStart(LiftModel m, ControllerView c) {
 		this.m = m;
+		this.c = c;
 	}
 
 	@Override
@@ -51,7 +54,14 @@ public class LiftStart implements State {
 								(m.getCurrentFloor() == button.getButtonFloor())) {
 
 							//Open Doors
-							m.setDoorOpen(true);
+							ControllerView.animationViews.get(m.getCurrentFloor()).openDoors();
+							try {
+								Thread.sleep(1000);
+							} catch (InterruptedException e1) {
+								TextView.printError("Door State", "Thread sleep time related error.");
+							} finally {
+								m.setDoorOpen(true);
+							}
 
 							//Notification of Arrival
 							//IF NO PASSENGERS HAVE ENTERED AND ARE WAITING

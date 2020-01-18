@@ -3,7 +3,9 @@ package Views;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -26,24 +28,30 @@ public class ControllerView extends Frame implements Observer {
 	public enum scenario { S1, S2, S3, ENABLE, DISABLE }
 	public scenario activeScenario = scenario.S1; //Default scenario selection
 
-	private static ImageIcon startDefault;
-	private static ImageIcon startPressed;
-	private static ImageIcon stopDefault;
-	private static ImageIcon stopPressed;
-
 	private static JButton startstop = new JButton();
 	private static JButton s1 = new JButton();
 	private static JButton s2 = new JButton();
 	private static JButton s3 = new JButton();
-
-	private static JPanel animationView = new JPanel();
-	private static JTextArea textView = new JTextArea(50, 120);
+	
+	private static JPanel buttonPanel = new JPanel();
+	private static JPanel viewPanel = new JPanel();
+	
+	private static Box buttonBox = Box.createVerticalBox();
+	private static Box viewBox = Box.createVerticalBox();
+	
+	public static List<AnimationView> animationViews = new ArrayList<AnimationView>();
+	
+	private static JTextArea textView = new JTextArea(8, 120);
 	private static MessageConsole mc = new MessageConsole(textView);
+	private static JScrollPane scrollPane = new JScrollPane(textView, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
 
 	public static Map<String, ImageIcon> imageAssets = new HashMap<String, ImageIcon>();;
-
+	
 	public ControllerView() {
-
+		animationViews.add(new AnimationView(0));
+		animationViews.add(new AnimationView(1));
+		
 		try {
 			//Button Image Icons in Image Assets Hash Map			
 			//Make Start Stop Graphics Static and Globally Accessible to Class
@@ -114,17 +122,13 @@ public class ControllerView extends Frame implements Observer {
 
 		//Creating the Frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(1700, 1000);
+		frame.setSize(1700, 1100);
 		frame.setResizable(false);
 		frame.setVisible(true);
 	}
 
-	public void initComponents() {		
-		JPanel buttonPanel = new JPanel();
-		JPanel viewPanel = new JPanel();
-
-		Box buttonBox = Box.createVerticalBox();
-
+	public void initComponents() {
+		
 		startstop.setSize(100, 40);
 		s1.setSize(100, 40);
 		s2.setSize(100, 40);
@@ -138,10 +142,12 @@ public class ControllerView extends Frame implements Observer {
 		buttonBox.add(s2);
 		buttonBox.add(s3);
 		buttonPanel.add(buttonBox);
-
-		//viewPanel.add(animationView);
-		viewPanel.setSize(800, 400);
-		viewPanel.add(new JScrollPane(textView, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS));
+		
+		viewBox.add(animationViews.get(1));
+		viewBox.add(animationViews.get(0));
+		viewBox.add(scrollPane);
+		viewPanel.add(viewBox);
+		
 
 		//Redirect Console Output to Message Console Text View Component in View Panel
 		mc.redirectOut(Color.BLACK, null);
@@ -151,6 +157,11 @@ public class ControllerView extends Frame implements Observer {
 		//Adding Components to the frame
 		frame.getContentPane().add(BorderLayout.LINE_END, buttonPanel);
 		frame.getContentPane().add(BorderLayout.WEST, viewPanel);
+		
+		animationViews.get(0).start();
+		animationViews.get(1).start();
+		//animationViews.get(0).openDoors();
+		//animationViews.get(1).openDoors();
 
 		//Define button Action Listeners
 		//StartStop Button
@@ -263,20 +274,6 @@ public class ControllerView extends Frame implements Observer {
 
 	@Override
 	public void update() {
-
-		//		Object update = subject.getUpdate(this);
-		//
-		//		if (update instanceof State ) {
-		//
-		//			//((State) update).doAction(this.running, b);			
-		//			startStopButton();
-		//			TextView.print("Updating C");
-		//
-		//		} else {
-		//
-		//			TextView.printError("Object State", "Update object pushed, not of State object type.");
-		//		}
-
 		startStopButton();
 	}
 

@@ -5,6 +5,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import States.*;
 import Subjects.*;
+import Views.ControllerView;
 import Views.TextView;
 
 public final class LiftModel implements Subject, State {
@@ -23,6 +24,8 @@ public final class LiftModel implements Subject, State {
 	private final Object MUTEX= new Object();
 	private boolean changed;
 	
+	private ControllerView c;
+	
 	private State liftState;
 	public final State liftInitState;
 	public final State liftStartState;
@@ -30,17 +33,19 @@ public final class LiftModel implements Subject, State {
 	public final State liftEndState; //End of Lift Floor Movement
 	public final State liftEndScenarioState; //End of entire Lift Scenario
      
-    private LiftModel(int maxWeight, int minFloor, int maxFloor) {
+    private LiftModel(int maxWeight, int minFloor, int maxFloor, ControllerView c) {
     	
     	this.maxWeight = maxWeight; //To be used for program extension
     	this.minFloor = minFloor;
     	this.maxFloor = maxFloor;
     	
-    	this.liftInitState = new LiftInit(this);
-    	this.liftStartState = new LiftStart(this);
-    	this.liftMovingState = new LiftMoving(this);
-    	this.liftEndState = new LiftEnd(this);
-    	this.liftEndScenarioState = new LiftEndScenario(this);
+    	this.c = c;
+    	
+    	this.liftInitState = new LiftInit(this, c);
+    	this.liftStartState = new LiftStart(this, c);
+    	this.liftMovingState = new LiftMoving(this, c);
+    	this.liftEndState = new LiftEnd(this, c);
+    	this.liftEndScenarioState = new LiftEndScenario(this, c);
     	
     	this.passengers = new CopyOnWriteArrayList<Person>(new ArrayList<Person>());
     	this.persons = new CopyOnWriteArrayList<Person>(new ArrayList<Person>());
@@ -104,13 +109,13 @@ public final class LiftModel implements Subject, State {
     }
     
 
-    public synchronized static LiftModel initialise(int maxWeight, int minFloor, int maxFloor) {
+    public synchronized static LiftModel initialise(int maxWeight, int minFloor, int maxFloor, ControllerView c) {
         if (INSTANCE != null)
         {
             throw new AssertionError("Lift Model Instance already initialised.");
         }
         
-        INSTANCE = new LiftModel(maxWeight, minFloor, maxFloor);
+        INSTANCE = new LiftModel(maxWeight, minFloor, maxFloor, c);
         TextView.print("Lift Initialised\t\t|\tFloors " + minFloor + " to " + maxFloor);
         
         return INSTANCE;

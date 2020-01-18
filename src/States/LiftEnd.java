@@ -6,14 +6,17 @@ import CustomDataTypes.Generic;
 import LiftComponents.LiftModel;
 import Subjects.Button;
 import Subjects.Person;
+import Views.ControllerView;
 import Views.TextView;
 
 public class LiftEnd implements State {
 
 	private LiftModel m;
+	private ControllerView c;
 
-	public LiftEnd(LiftModel m) {
+	public LiftEnd(LiftModel m, ControllerView c) {
 		this.m = m;
+		this.c = c;
 	}
 
 	@Override
@@ -41,7 +44,14 @@ public class LiftEnd implements State {
 				if (!running) {					
 					TextView.print("Lift\tEND\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor());
 				} else {
-					m.setDoorOpen(true);
+					ControllerView.animationViews.get(m.getCurrentFloor()).openDoors();
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e1) {
+						TextView.printError("Door State", "Thread sleep time related error.");
+					} finally {
+						m.setDoorOpen(true);
+					}
 
 					//People Enter - sleep thread for 1 second
 					for (Person passenger: m.passengers()) {
@@ -63,9 +73,17 @@ public class LiftEnd implements State {
 
 					if (m.persons().isEmpty()) {
 
-						m.setDoorOpen(false);
+						ControllerView.animationViews.get(m.getCurrentFloor()).closeDoors();
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e1) {
+							TextView.printError("Door State", "Thread sleep time related error.");
+						} finally {
+							m.setDoorOpen(false);
+						}
+
 						TextView.print("Lift\tEND\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tLift Journey End");
-						//ControllerView.startStopButton(false);
+						
 						m.postUpdate(m.liftEndScenarioState);
 
 					} else {

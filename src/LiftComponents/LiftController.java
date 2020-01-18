@@ -19,6 +19,7 @@ public class LiftController {
 
 	private  LiftView v;
 	private LiftModel m;
+	private ControllerView c;
 
 	public LiftController(LiftView v, LiftModel m, List<Button> b, ControllerView c) throws InterruptedException {
 
@@ -63,6 +64,7 @@ public class LiftController {
 		//Generate required objects
 		this.v = v; //	LiftView	| Main Observer
 		this.m = m; //	LiftModel	| Main Subject
+		this.c = c;
 		//Register observers to the subject
 		//Register model to view and initialise model
 		v.update();
@@ -135,7 +137,7 @@ public class LiftController {
 
 			//Iterate through number of passengers
 			for (int personIndex = 0; personIndex < floors.get(index).getPeople(); personIndex = personIndex + 1) {
-				m.persons().add(new Person(floors.get(index).getFloorStart(), floors.get(index).getFloorEnd(), m));
+				m.persons().add(new Person(floors.get(index).getFloorStart(), floors.get(index).getFloorEnd(), m, c));
 				m.persons().get(personIndex).register(v);
 			}
 

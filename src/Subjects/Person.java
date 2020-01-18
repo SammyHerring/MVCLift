@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import LiftComponents.LiftModel;
 import States.*;
+import Views.ControllerView;
 
 public class Person implements Subject {
 
@@ -26,7 +27,7 @@ public class Person implements Subject {
 	private State personState;
 	public final State personStartFloorState;
 	
-	public Person(Integer startFloor, Integer endFloor, LiftModel m) {
+	public Person(Integer startFloor, Integer endFloor, LiftModel m, ControllerView c) {
 		
     	this.weight = weightFloat();
     	
@@ -35,7 +36,7 @@ public class Person implements Subject {
 		
 		this.m = m;
 		
-		this.personStartFloorState = new PersonStartFloor(this);
+		this.personStartFloorState = new PersonStartFloor(this, c);
 		
 		this.observers = new ArrayList<>();
 		

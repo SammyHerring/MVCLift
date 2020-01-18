@@ -5,14 +5,17 @@ import java.util.List;
 import CustomDataTypes.Generic;
 import LiftComponents.LiftModel;
 import Subjects.Button;
+import Views.ControllerView;
 import Views.TextView;
 
 public class LiftMoving implements State {
 
 	private LiftModel m;
+	private ControllerView c;
 
-	public LiftMoving(LiftModel m) {
+	public LiftMoving(LiftModel m, ControllerView c) {
 		this.m = m;
+		this.c = c;
 	}
 
 	@Override
@@ -52,7 +55,15 @@ public class LiftMoving implements State {
 								//IF NOT EMPTY, MOVE LIFT TO FLOOR REQUESTED BY PASSENGERS
 								if (m.passengers().get(0).getStartFloor() == button.getButtonFloor()) {
 
-									m.setDoorOpen(false);
+									ControllerView.animationViews.get(m.getCurrentFloor()).closeDoors();
+									try {
+										Thread.sleep(1000);
+									} catch (InterruptedException e1) {
+										TextView.printError("Door State", "Thread sleep time related error.");
+									} finally {
+										m.setDoorOpen(false);
+									}
+
 									TextView.print("Lift\tMOVING\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tLift in Transit");
 
 									//ACTUAL LIFT MOVEMENT
@@ -62,8 +73,8 @@ public class LiftMoving implements State {
 										int travelTime = 5; //Seconds
 
 										for (int progress = 0; progress < travelTime; progress = progress + 1) {
-												animateMovement(progress, travelTime, m);
-												Thread.sleep(1000);
+											animateMovement(progress, travelTime, m);
+											Thread.sleep(1000);
 										}
 
 									} catch (InterruptedException e) {
@@ -73,8 +84,18 @@ public class LiftMoving implements State {
 									} finally {
 
 										button.postUpdate(button.buttonUnpressedState);
+										ControllerView.animationViews.get(m.getCurrentFloor()).switchActiveFrames(false);
+
 										m.setCurrentFloor(m.passengers().get(0).getEndFloor()); //Prioritise lift movement to first passenger to enter lift
-										m.setDoorOpen(true);
+										ControllerView.animationViews.get(m.getCurrentFloor()).openDoors();
+										try {
+											Thread.sleep(1000);
+										} catch (InterruptedException e1) {
+											TextView.printError("Door State", "Thread sleep time related error.");
+										} finally {
+											m.setDoorOpen(true);
+										}
+
 										TextView.print("Lift\tEND\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tLift Arrived");
 										m.postUpdate(m.liftEndState);
 
@@ -84,7 +105,15 @@ public class LiftMoving implements State {
 								//IF EMPTY, MOVE TO FLOOR REQUESTED BY BUTTON PRESS
 							} else {
 
-								m.setDoorOpen(false);
+								ControllerView.animationViews.get(m.getCurrentFloor()).closeDoors();
+								try {
+									Thread.sleep(1000);
+								} catch (InterruptedException e1) {
+									TextView.printError("Door State", "Thread sleep time related error.");
+								} finally {
+									m.setDoorOpen(false);
+								}
+
 								TextView.print("Lift\tMOVING\t|\tDoor Open: " + Generic.convertToTitleCase(String.valueOf(m.getDoorOpen())) + "\tFloor: " + m.getCurrentFloor() + "\tLift in Transit");
 								try {
 
@@ -104,7 +133,16 @@ public class LiftMoving implements State {
 								} finally {
 
 									m.setCurrentFloor(button.getButtonFloor());
-									m.setDoorOpen(true);
+									
+									ControllerView.animationViews.get(m.getCurrentFloor()).openDoors();
+									try {
+										Thread.sleep(1000);
+									} catch (InterruptedException e1) {
+										TextView.printError("Door State", "Thread sleep time related error.");
+									} finally {
+										m.setDoorOpen(true);
+									}
+
 									m.postUpdate(m.liftEndState);
 
 								}

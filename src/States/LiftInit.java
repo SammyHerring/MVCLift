@@ -6,14 +6,17 @@ import java.util.List;
 import CustomDataTypes.Generic;
 import LiftComponents.LiftModel;
 import Subjects.Button;
+import Views.ControllerView;
 import Views.TextView;
 
 public class LiftInit implements State {
 
 	private LiftModel m;
+	private ControllerView c;
 
-	public LiftInit(LiftModel m) {
+	public LiftInit(LiftModel m, ControllerView c) {
 		this.m = m;
+		this.c = c;
 	}
 
 	@Override
@@ -42,6 +45,7 @@ public class LiftInit implements State {
 				///	START | Lift INIT State View Update
 				
 				m.setCurrentFloor(m.minFloor());
+				ControllerView.animationViews.get(m.getCurrentFloor()).closeDoors();
 				m.setDoorOpen(false);
 
 				if (!running) {

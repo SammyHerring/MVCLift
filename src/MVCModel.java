@@ -17,7 +17,7 @@ public class MVCModel {
 		TextView.print("---\tLift Simulator Program\t---");
 		TextView.print("---\tSimulator Initialising\t---\n", true);
 		
-		LiftModel.initialise(1000, 0, 1); //Lift Initialisation Parameters --> maxWeight, minFloor, maxFloor
+		LiftModel.initialise(1000, 0, 1, c); //Lift Initialisation Parameters --> maxWeight, minFloor, maxFloor
 		LiftModel m = LiftModel.getInstance();
 		
 		//Generate list of Buttons for Model
