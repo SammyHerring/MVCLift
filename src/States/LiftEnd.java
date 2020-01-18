@@ -47,7 +47,7 @@ public class LiftEnd implements State {
 					ControllerView.animationViews.get(m.getCurrentFloor()).openDoors();
 					try {
 						Thread.sleep(1000);
-					} catch (InterruptedException e1) {
+					} catch (InterruptedException ex) {
 						TextView.printError("Door State", "Thread sleep time related error.");
 					} finally {
 						m.setDoorOpen(true);
