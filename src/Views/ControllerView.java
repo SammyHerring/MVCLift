@@ -12,7 +12,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import CustomDataTypes.MessageConsole;
-import States.State;
 import Subjects.Observer;
 import Subjects.Subject;
 

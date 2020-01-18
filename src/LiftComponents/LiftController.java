@@ -26,22 +26,22 @@ public class LiftController {
 		Map<scenario, Scenario> scenarios = new HashMap<scenario, Scenario>();
 
 		//Scenario Setups	
-		//Scenarios constructed with list of Scenario Floor Type Objects and Initial State Designation
+		//Scenarios constructed with list of Scenario Floor Type Objects and Initial Floor Designation
 		//Scenario 1
 		ScenarioFloor s1f0 = new ScenarioFloor(1, 0, 1, 0); //Scenario Floor 0 --> Number of People, Source, Destination, Instance
 		List<ScenarioFloor> s1floors = Arrays.asList(new ScenarioFloor[]{s1f0});
-		scenarios.put(scenario.S1, new Scenario(s1floors, m.liftInitState));
+		scenarios.put(scenario.S1, new Scenario(s1floors, 0));
 
 		//Scenario 2
 		ScenarioFloor s2f1 = new ScenarioFloor(1, 1, 0, 0); //Scenario Floor 1 --> Number of People, Source, Destination, Instance
 		List<ScenarioFloor> s2floors = Arrays.asList(new ScenarioFloor[]{s2f1});
-		scenarios.put(scenario.S2, new Scenario(s2floors, m.liftInitState));
+		scenarios.put(scenario.S2, new Scenario(s2floors, 1));
 
 		//Scenario 3
 		ScenarioFloor s3f0 = new ScenarioFloor(3, 0, 1, 0); //Scenario Floor 0 --> Number of People, Source, Destination, Instance
 		ScenarioFloor s3f1 = new ScenarioFloor(1, 1, 0, 0); //Scenario Floor 1 --> Number of People, Source, Destination, Instance
 		List<ScenarioFloor> s3floors = Arrays.asList(new ScenarioFloor[]{s3f0, s3f1});
-		scenarios.put(scenario.S3, new Scenario(s3floors, m.liftInitState));
+		scenarios.put(scenario.S3, new Scenario(s3floors, 1));
 
 		//Scenario 3b || UNUSED SCENARIO FOR TESTING SYSTEM LIMITS
 		//TO USE, COMMENT SCENARIO 3, SEE ABOVE, AND UN COMMENT SCENARIO 3b -- BELOW THIS LINE
@@ -53,7 +53,7 @@ public class LiftController {
 		//Default Scenario Setting 
 		Scenario s = scenarios.get(scenario.S1); //Scenario Designation to prevent null pointer error if controller pointer fails
 		try {
-			s = scenarios.get(c.getScenario());
+			s = scenarios.get(c.getScenario()); //Attempt to set default scenario from Controller
 		} catch (Exception ex) {
 			TextView.printError("Scenario Selection", "Default Scenario Not Found on Controller");
 		}
@@ -76,7 +76,7 @@ public class LiftController {
 				c.update();
 				s = scenarios.get(c.getScenario());
 
-				generateScenario(s);
+				generateScenario(s, m);
 
 				//Register all instances of buttons to view
 				for (Button button : b) {
@@ -123,7 +123,7 @@ public class LiftController {
 	}
 
 
-	public void generateScenario(Scenario s) {
+	public void generateScenario(Scenario s, LiftModel m) {
 
 		resetScenario();
 
@@ -142,6 +142,8 @@ public class LiftController {
 			}
 
 		}
+		
+		m.setStartFloor(s.getStartFloor());
 
 	}
 

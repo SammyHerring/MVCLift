@@ -10,12 +10,13 @@ public class Scenario {
 	private static AtomicInteger uniqueId=new AtomicInteger();
 	
 	private List<ScenarioFloor> floors; //Floor scenarios per instance
+	private int startFloor;
 	
-	public Scenario(List<ScenarioFloor> floors, State state) {
+	public Scenario(List<ScenarioFloor> floors, int startFloor) {
 		
 		this.ID = uniqueId.getAndIncrement();
-		
 		this.floors = floors;
+		this.startFloor = startFloor;
 	}
 	
     /// START	|	ACCESSOR & MUTATOR METHODS
@@ -23,6 +24,8 @@ public class Scenario {
 	public Integer getID() { return this.ID; }
 
 	public List<ScenarioFloor> getFloors() { return floors; }
+	
+	public int getStartFloor() { return startFloor; }
 	
     /// END	|	ACCESSOR & MUTATOR METHODS
 	

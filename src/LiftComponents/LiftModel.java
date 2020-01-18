@@ -15,6 +15,7 @@ public final class LiftModel implements Subject, State {
 	private int maxWeight;
 	private int minFloor;
 	private int maxFloor;
+	private int startFloor;
 	private CopyOnWriteArrayList<Person> passengers;
 	private CopyOnWriteArrayList<Person> persons;
 	
@@ -38,6 +39,7 @@ public final class LiftModel implements Subject, State {
     	this.maxWeight = maxWeight; //To be used for program extension
     	this.minFloor = minFloor;
     	this.maxFloor = maxFloor;
+    	this.startFloor = minFloor;
     	
     	this.c = c;
     	
@@ -151,6 +153,9 @@ public final class LiftModel implements Subject, State {
     		return (this.maxFloor - this.minFloor);
     	}
     }
+    
+    public void setStartFloor(int startFloor) { this.startFloor = startFloor; }
+    public int getStartFloor() { return this.startFloor; }
     
     public List<Person> passengers() { return this.passengers; }
     

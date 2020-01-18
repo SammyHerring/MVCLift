@@ -44,7 +44,7 @@ public class LiftInit implements State {
 				
 				///	START | Lift INIT State View Update
 				
-				m.setCurrentFloor(m.minFloor());
+				m.setCurrentFloor(m.getStartFloor());
 				ControllerView.animationViews.get(m.getCurrentFloor()).closeDoors();
 				m.setDoorOpen(false);
 
