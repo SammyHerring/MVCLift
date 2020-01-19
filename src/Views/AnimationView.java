@@ -30,12 +30,14 @@ public class AnimationView extends JPanel implements ActionListener {
 
 	private int delay = 50, totalFrames = 17, currentFrame = 0;
 
-	public AnimationView(int floor) {
+	public AnimationView(int floor, JLayeredPane floorLayer) {
 
 		this.floor = floor;
 
-		Dimension size = new Dimension(1400, 466);
+		//Dimension size = new Dimension(1400, 466);
+		Dimension size = new Dimension(floorLayer.getSize());
 		this.setPreferredSize(size);
+		this.setSize(size);
 
 		if (floor == 0) {
 			buttonFrames = new ImageIcon[totalFrames];

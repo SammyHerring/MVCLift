@@ -32,6 +32,9 @@ public class ControllerView extends Frame implements Observer {
 	private static JButton s2 = new JButton();
 	private static JButton s3 = new JButton();
 	
+	private JLayeredPane floor0 = new JLayeredPane();
+	private JLayeredPane floor1 = new JLayeredPane();
+	
 	private static JPanel buttonPanel = new JPanel();
 	private static JPanel viewPanel = new JPanel();
 	
@@ -39,17 +42,25 @@ public class ControllerView extends Frame implements Observer {
 	private static Box viewBox = Box.createVerticalBox();
 	
 	public static List<AnimationView> animationViews = new ArrayList<AnimationView>();
+	public static List<PersonAnimationView> personViews = new ArrayList<PersonAnimationView>();
 	
 	private static JTextArea textView = new JTextArea(8, 120);
 	private static MessageConsole mc = new MessageConsole(textView);
 	private static JScrollPane scrollPane = new JScrollPane(textView, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-
 	public static Map<String, ImageIcon> imageAssets = new HashMap<String, ImageIcon>();;
 	
 	public ControllerView() {
-		animationViews.add(new AnimationView(0));
-		animationViews.add(new AnimationView(1));
+		Dimension size = new Dimension(1450, 450);
+		floor0.setPreferredSize(size);
+		floor0.setSize(size);
+		floor1.setPreferredSize(size);
+		floor1.setSize(size);
+		
+		animationViews.add(new AnimationView(0, floor0));
+		animationViews.add(new AnimationView(1, floor1));
+		
+		personViews.add(new PersonAnimationView(0));
 		
 		try {
 			//Button Image Icons in Image Assets Hash Map			
@@ -120,6 +131,7 @@ public class ControllerView extends Frame implements Observer {
 		initComponents();
 
 		//Creating the Frame
+		frame.getContentPane().setBackground(Color.WHITE);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(1700, 1100);
 		frame.setResizable(false);
@@ -142,12 +154,17 @@ public class ControllerView extends Frame implements Observer {
 		buttonBox.add(s3);
 		buttonPanel.add(buttonBox);
 		
-		viewBox.add(animationViews.get(1));
-		viewBox.add(animationViews.get(0));
+		floor0.add(animationViews.get(0), 1, 0);
+		floor1.add(animationViews.get(1), 0, 0);
+		
+		viewBox.add(floor1);
+		viewBox.add(floor0);
+		
+		scrollPane.setBorder(BorderFactory.createTitledBorder("Console Output"));
+		scrollPane.setSize(new Dimension(1425, getHeight()));
 		viewBox.add(scrollPane);
 		viewPanel.add(viewBox);
 		
-
 		//Redirect Console Output to Message Console Text View Component in View Panel
 		mc.redirectOut(Color.BLACK, null);
 		mc.redirectErr(Color.BLACK, null);
@@ -159,6 +176,7 @@ public class ControllerView extends Frame implements Observer {
 		
 		animationViews.get(0).start();
 		animationViews.get(1).start();
+		personViews.get(0).start();
 		//animationViews.get(0).openDoors();
 		//animationViews.get(1).openDoors();
 
